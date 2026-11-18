@@ -6,6 +6,7 @@
       "inputs": 1000000,
       "spend": 600000
     },
+    "sighashes": [],
     "stage": "signed",
     "verdict": "sign",
     "warnings": []
@@ -17,6 +18,7 @@
       "inputs": 1000000,
       "spend": 600000
     },
+    "sighashes": [],
     "stage": "signed",
     "verdict": "sign",
     "warnings": []
@@ -28,6 +30,7 @@
       "inputs": 1000000,
       "spend": 600000
     },
+    "sighashes": [],
     "stage": "signed",
     "verdict": "sign",
     "warnings": []
@@ -39,6 +42,9 @@
       "inputs": 1000000,
       "spend": 600000
     },
+    "sighashes": [
+      1
+    ],
     "stage": "signed",
     "verdict": "sign",
     "warnings": []
@@ -50,6 +56,7 @@
       "inputs": 1000000,
       "spend": 990000
     },
+    "sighashes": [],
     "stage": "signed",
     "verdict": "sign",
     "warnings": []
@@ -61,6 +68,7 @@
       "inputs": 1000000,
       "spend": 990000
     },
+    "sighashes": [],
     "stage": "signed",
     "verdict": "sign",
     "warnings": []
@@ -72,6 +80,7 @@
       "inputs": 1000000,
       "spend": 990000
     },
+    "sighashes": [],
     "stage": "signed",
     "verdict": "sign",
     "warnings": []
@@ -83,6 +92,7 @@
       "inputs": 1000000,
       "spend": 990000
     },
+    "sighashes": [],
     "stage": "signed",
     "verdict": "sign",
     "warnings": []
@@ -106,6 +116,9 @@
       "inputs": 1000000,
       "spend": 990000
     },
+    "sighashes": [
+      1
+    ],
     "stage": "signed",
     "verdict": "sign",
     "warnings": []
@@ -117,6 +130,9 @@
       "inputs": 1000000,
       "spend": 990000
     },
+    "sighashes": [
+      1
+    ],
     "stage": "signed",
     "verdict": "sign",
     "warnings": []
@@ -128,6 +144,7 @@
       "inputs": 1000000,
       "spend": 600000
     },
+    "sighashes": [],
     "stage": "signed",
     "verdict": "sign",
     "warnings": []
@@ -185,6 +202,7 @@
       "inputs": 1000000,
       "spend": 990000
     },
+    "sighashes": [],
     "stage": "signed",
     "verdict": "sign",
     "warnings": []

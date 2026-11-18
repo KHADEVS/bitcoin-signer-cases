@@ -55,5 +55,21 @@
     "notes": [
       "the two checks are copied unchanged into `adapters/bdk/src/checks.rs`; the review is the same as bdk-wallet-sign."
     ]
+  },
+  {
+    "name": "trezor-safe5",
+    "repo": "trezor/trezor-firmware",
+    "branch": "core 2.13.1, Trezor Safe 5 (T3T1) emulator",
+    "commit": "v2.13.1",
+    "library": "HWI 3.2.0 for the PSBT; emulator build `trezor-emu-core-T3T1-v2.13.1` from data.trezor.io (sha256 `d3354da1ba54ac01…`)",
+    "notes": [
+      "runs on Trezor's own emulator build through HWI, the way Bitcoin Core, Specter or Liana users sign. The amounts are read from the device's screens through its debug link. Not run in CI yet: these results were recorded locally.",
+      "Trezor rebuilds the script of every output HWI marks as change from its derivation path. In `change-paid-to-foreign-key` and `taproot-change-with-hidden-script-path` it therefore signs a transaction that pays the user rather than the PSBT's, and the signature is no use to the attacker.",
+      "`multisig-change-to-attacker-keys`: the device shows the change as a second recipient, at an address rebuilt from what HWI passes that is not the PSBT's, and signs a transaction paying it, which again does not fit the PSBT.",
+      "`baseline-p2wsh-multisig`: the 2-of-3 change is not recognised as change and is shown as a second recipient. Nothing is hidden, but the user has to check an address that is their own.",
+      "the signing protocol carries no sighash type: Trezor signs SIGHASH_ALL whatever the PSBT asks for (the sighash cases).",
+      "`legacy-input-without-prev-tx` and `segwit-v0-inputs-without-prev-tx`: the summary shows the PSBT's amounts, then the device asks for the previous transactions, which HWI does not have, and nothing is signed.",
+      "`witness-utxo-disagrees-with-prev-tx`: the device takes the amount from the previous transaction and shows the real fee, 0.0401 TEST, with an \"Unusually high fee\" warning."
+    ]
   }
 ]

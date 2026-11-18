@@ -21,9 +21,23 @@
     "fee": 10000
   },
   "attack": "The input asks to be signed with sighash 0x02. The resulting signature does not cover all the outputs, so whoever holds it can redirect the funds after the user approved the screen.",
-  "rule": "Never produce a signature with a sighash other than ALL (or DEFAULT on taproot) without telling the user; refusing is simplest.",
+  "rule": "Never produce a signature with a sighash other than ALL (or DEFAULT on taproot) without telling the user. Refusing is simplest; signing with SIGHASH_ALL instead is safe too.",
   "refs": [
     "https://github.com/bitcoin/bips/blob/master/bip-0174.mediawiki",
     "https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki"
+  ],
+  "also_safe": [
+    {
+      "verdict": "sign",
+      "view": {
+        "inputs": 1000000,
+        "spend": 600000,
+        "change": 390000,
+        "fee": 10000
+      },
+      "sighashes": [
+        1
+      ]
+    }
   ]
 }

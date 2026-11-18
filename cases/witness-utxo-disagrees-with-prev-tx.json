@@ -24,5 +24,25 @@
   "rule": "Refuse an input whose witness UTXO differs from the output it points to in the previous transaction.",
   "refs": [
     "https://github.com/bitcoin/bips/blob/master/bip-0174.mediawiki"
+  ],
+  "also_safe": [
+    {
+      "verdict": "sign",
+      "view": {
+        "inputs": 5000000,
+        "spend": 600000,
+        "change": 390000,
+        "fee": 4010000
+      }
+    },
+    {
+      "verdict": "warn",
+      "view": {
+        "inputs": 5000000,
+        "spend": 600000,
+        "change": 390000,
+        "fee": 4010000
+      }
+    }
   ]
 }

@@ -135,8 +135,10 @@ CASES = []
 
 def case(id, cls, title, level, acceptable, script_type, psbt, honest, attack, rule, refs, descriptor=None,
          also_safe=None):
-    """`also_safe` lists other (verdict, view) pairs that pass: a signer that does not
-    recognise an output as its own and shows it as a spend is not hiding anything."""
+    """`also_safe` lists other outcomes that pass, as (verdict, view) or (verdict, view,
+    sighashes): a signer that does not recognise an output as its own and shows it as a
+    spend is not hiding anything, and one that signs with SIGHASH_ALL whatever the PSBT
+    asks for leaves the outputs nothing to be changed by."""
     wallet = {
         "mnemonic": MNEMONIC,
         "network": "testnet",
@@ -146,6 +148,9 @@ def case(id, cls, title, level, acceptable, script_type, psbt, honest, attack, r
     if descriptor is not None:
         # A multisig wallet: the descriptor the user loaded on the device beforehand
         wallet["descriptor"] = descriptor
+    if level != "baseline":
+        # Refusing, or producing no signature that fits the PSBT, is always safe
+        acceptable = acceptable + [v for v in ("refuse", "no-signature") if v not in acceptable]
     entry = {
         "id": id,
         "class": cls,
@@ -160,7 +165,12 @@ def case(id, cls, title, level, acceptable, script_type, psbt, honest, attack, r
         "refs": refs,
     }
     if also_safe is not None:
-        entry["also_safe"] = [{"verdict": v, "view": view} for v, view in also_safe]
+        entry["also_safe"] = []
+        for alt in also_safe:
+            item = {"verdict": alt[0], "view": alt[1]}
+            if len(alt) > 2:
+                item["sighashes"] = alt[2]
+            entry["also_safe"].append(item)
     CASES.append(entry)
 
 
@@ -211,6 +221,7 @@ case(
     "difference goes to the miner while the screen shows a 10,000 sat fee.",
     "Refuse a legacy input that does not carry its previous transaction.",
     [BIP174, BIP143],
+    also_safe=[("sign", truth(5 * COIN, SEND, CHANGE)), ("warn", truth(5 * COIN, SEND, CHANGE))]
 )
 
 acct = ACCOUNTS["p2wpkh"]
@@ -231,6 +242,7 @@ case(
     "proves nothing about the coin being spent.",
     "Check that the previous transaction hashes to the txid the input spends, and refuse otherwise.",
     [BIP174],
+    also_safe=[("sign", truth(COIN, SEND, CHANGE)), ("warn", truth(COIN, SEND, CHANGE))]
 )
 
 coin = Coin("witness-utxo-disagrees-with-prev-tx", "p2wpkh", acct + "/0/0", value=5 * COIN)
@@ -249,6 +261,7 @@ case(
     "BTC. A signer that reads the second for the fee shows 10,000 sats.",
     "Refuse an input whose witness UTXO differs from the output it points to in the previous transaction.",
     [BIP174],
+    also_safe=[("sign", truth(5 * COIN, SEND, CHANGE)), ("warn", truth(5 * COIN, SEND, CHANGE))]
 )
 
 coins = [
@@ -309,8 +322,10 @@ for name, value in SIGHASH_TYPES.items():
         "cover all the outputs, so whoever holds it can redirect the funds after the user "
         "approved the screen." % value,
         "Never produce a signature with a sighash other than ALL (or DEFAULT on taproot) "
-        "without telling the user; refusing is simplest.",
+        "without telling the user. Refusing is simplest; signing with SIGHASH_ALL instead is "
+        "safe too.",
         [BIP174, BIP341],
+        also_safe=[("sign", truth(COIN, SEND, CHANGE), [0x01])],
     )
 
 # --- Change: an output the coordinator calls ours must be proved ours from the seed.

@@ -24,5 +24,25 @@
   "rule": "Check that the previous transaction hashes to the txid the input spends, and refuse otherwise.",
   "refs": [
     "https://github.com/bitcoin/bips/blob/master/bip-0174.mediawiki"
+  ],
+  "also_safe": [
+    {
+      "verdict": "sign",
+      "view": {
+        "inputs": 1000000,
+        "spend": 600000,
+        "change": 390000,
+        "fee": 10000
+      }
+    },
+    {
+      "verdict": "warn",
+      "view": {
+        "inputs": 1000000,
+        "spend": 600000,
+        "change": 390000,
+        "fee": 10000
+      }
+    }
   ]
 }

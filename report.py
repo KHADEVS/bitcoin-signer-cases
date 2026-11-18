@@ -23,8 +23,12 @@ def grade(case, result):
     """Returns (passed, reason)."""
     verdict = result["verdict"]
     for alt in case.get("also_safe", []):
-        if verdict == alt["verdict"] and matches(result["shown"], alt["view"]):
-            return True, ""
+        if verdict != alt["verdict"] or not matches(result["shown"], alt["view"]):
+            continue
+        # A sighash condition holds only if the adapter reports what it signed with
+        if "sighashes" in alt and not (result.get("sighashes") and set(result["sighashes"]) <= set(alt["sighashes"])):
+            continue
+        return True, ""
     if verdict not in case["acceptable"]:
         return False, "expected %s" % " or ".join(case["acceptable"])
     if verdict in ("sign", "warn"):
@@ -64,7 +68,7 @@ def main():
         lines.append("| %s | %s `%s` (%s), %s |" % (t["name"], t["repo"], t["commit"][:10], t["branch"], t["library"]))
     lines.append("")
 
-    totals = {t["name"]: {"pass": 0, "must": 0, "should": 0} for t in targets}
+    totals = {t["name"]: {"pass": 0, "must": 0, "should": 0, "baseline": 0} for t in targets}
     header = "| Case | Level | " + " | ".join(t["name"] for t in targets) + " |"
     lines.append(header)
     lines.append("| --- | --- | " + " | ".join("---" for _ in targets) + " |")
@@ -79,8 +83,11 @@ def main():
     lines.append("")
     for t in targets:
         n = totals[t["name"]]
-        lines.append("- %s: %d of %d pass, %d must-level and %d should-level failures."
-                     % (t["name"], n["pass"], len(cases), n["must"], n["should"]))
+        line = "- %s: %d of %d pass, %d must-level and %d should-level failures" % (
+            t["name"], n["pass"], len(cases), n["must"], n["should"])
+        if n["baseline"]:
+            line += ", %d honest PSBT not handled as expected" % n["baseline"]
+        lines.append(line + ".")
     lines.append("")
 
     notes = [t for t in targets if t.get("notes")]

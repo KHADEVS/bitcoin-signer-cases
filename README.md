@@ -5,7 +5,8 @@ PSBTs built the way a hostile coordinator would build them, and a harness that r
 The signers so far:
 
 - [SeedSigner](https://github.com/SeedSigner/seedsigner) and [Krux](https://github.com/selfcustody/krux), open-source firmware written in Python on top of [embit](https://github.com/diybitcoinhardware/embit), so their own parsers run unchanged on a desktop;
-- [BDK](https://github.com/bitcoindevkit/bdk_wallet), the wallet library many software wallets are built on, in three ways: `Wallet::sign` as released in 3.2.0, `bitcoin::Psbt::sign` on its own (what the 3.2.0 deprecation note points to), and `Psbt::sign` after the checks that [bdk_wallet#647](https://github.com/bitcoindevkit/bdk_wallet/pull/647) proposes for 4.0.
+- [BDK](https://github.com/bitcoindevkit/bdk_wallet), the wallet library many software wallets are built on, in three ways: `Wallet::sign` as released in 3.2.0, `bitcoin::Psbt::sign` on its own (what the 3.2.0 deprecation note points to), and `Psbt::sign` after the checks that [bdk_wallet#647](https://github.com/bitcoindevkit/bdk_wallet/pull/647) proposes for 4.0;
+- [Trezor](https://github.com/trezor/trezor-firmware) Safe 5, on Trezor's own emulator build of firmware 2.13.1, driven through [HWI](https://github.com/bitcoin-core/HWI) as Bitcoin Core, Specter or Liana users drive it, with the amounts read from the device's screens.
 
 **Results: [results/MATRIX.md](results/MATRIX.md).**
 
@@ -56,7 +57,7 @@ Each file in `cases/` is one PSBT and what is expected of a signer that gets it.
 
 ## Grading
 
-A signer passes a case when its verdict is one of the case's acceptable verdicts and, whenever it shows the user a review (`sign` or `warn`), the spend, change and fee on that review are the honest ones. A refusal always counts as safe, and so does a signing step that produces no signature, since an attack on input amounts or sighash types needs one; whether that is also convenient is not graded.
+A signer passes a case when its verdict is one of the case's acceptable verdicts and, whenever it shows the user a review (`sign` or `warn`), the spend, change and fee on that review are the honest ones. Outside the honest baselines, a refusal always counts as safe, and so does a signing step that produces no signature valid for the PSBT's transaction, since every attack here needs one; whether that is also convenient is not graded. A case can list other safe outcomes in `also_safe`: a review that shows the real input amounts, an own output shown as a spend, a signature made with SIGHASH_ALL when the PSBT asked for something else.
 
 ## How the adapters work
 
@@ -65,8 +66,9 @@ The adapters call the signers' own code at a pinned commit. They do not reimplem
 - `adapters/seedsigner_adapter.py` follows `seedsigner/views/psbt_views.py`: the fingerprint check that selects the seed, `PSBTParser` (an exception there is a refusal), the totals and warnings the review screens get, the check of each multisig change output against the loaded descriptor that `PSBTChangeDetailsView` makes, then `sign_with()` and the signature count the flow uses to tell whether signing did anything.
 - `adapters/krux_adapter.py` loads the multisig descriptor into the wallet when the case has one, then follows `Home.sign_psbt()` in `src/krux/pages/home_pages/home.py`: `PSBTSigner` (an exception there is a refusal), the warnings shown before the review, the classification behind `outputs()`, then `sign()`. Krux's hardware modules are replaced with the stand-ins its own test suite uses.
 - `adapters/bdk` (Rust) builds a BDK wallet from the case's seed. BDK has no screens, so the review is what a wallet built on it gets from the library: the fee from `PsbtUtils::fee_amount` (none means no fee can be shown, a refusal) and each output sorted with `Wallet::is_mine`. It then signs in one of three modes: `wallet-sign` (`Wallet::sign` with `SignOptions::default()`), `psbt-sign` (`bitcoin::Psbt::sign`) and `psbt-sign-checked` (the checks from bdk_wallet#647's `examples/signing_checks.rs`, copied unchanged into `adapters/bdk/src/checks.rs`, then `Psbt::sign`). A verdict counts a signature as soon as one is in the PSBT, even when the call also returns an error.
+- `adapters/trezor_adapter.py` passes the PSBT to HWI's Trezor client against a running emulator. HWI's automatic confirmation is turned off; a driver on the debug link reads each screen, records it, then confirms it, holding where the device asks for a hold. The spend is the sum of the amounts shown for recipients and the fee is read from the summary. A signature counts only if it verifies against the PSBT's own transaction, with each input's amount taken from its previous transaction when the PSBT carries one, since that is what the network checks.
 
-What this does not cover: the code runs on CPython, not on the device, and the amounts are read from the objects the screens are built from, not from the screens. A difference between those and what the display draws would not show up here.
+What this does not cover: SeedSigner, Krux and BDK run on CPython or as a library, not on a device, and their amounts are read from the objects the screens are built from, not from the screens. Trezor runs as an emulator, not on hardware, and is not run in CI yet: its results were recorded locally (the notes in [results/MATRIX.md](results/MATRIX.md) name the build).
 
 ## Running
 
@@ -82,8 +84,12 @@ adapters/bdk/target/release/bdk-adapter wallet-sign cases > results/bdk-wallet-s
 adapters/bdk/target/release/bdk-adapter psbt-sign cases > results/psbt-sign-alone.json
 adapters/bdk/target/release/bdk-adapter psbt-sign-checked cases > results/psbt-sign-with-checks.json
 
+python adapters/trezor_adapter.py cases > results/trezor-safe5.json   # Linux, emulator running
+
 python -I report.py                          # write results/MATRIX.md
 ```
+
+The Trezor adapter needs Linux, the emulator binary from `https://data.trezor.io/dev/firmware/releases/emulators-new/T3T1/` (it links SDL3 and SDL3_image; on a system without them, build both and point the binary at them with `patchelf`), and `hwi`, `trezor` and `embit==0.8.0` in its environment. Start the emulator with `SDL_VIDEODRIVER=offscreen TREZOR_DISABLE_ANIMATION=1`; the adapter loads the case seed into it if it is empty.
 
 Run each adapter in its own environment: SeedSigner uses embit from PyPI, Krux its vendored copy (`git submodule update --init vendor/embit`; the Krux environment needs `pyqrcode` for the test stand-ins). `results/targets.json` names the commits. CI checks out those commits, rebuilds the cases and the results, and fails if anything differs from what is committed.
 
@@ -91,7 +97,8 @@ Run each adapter in its own environment: SeedSigner uses embit from PyPI, Krux i
 
 - More multisig: inputs from two different multisigs, a wallet with no descriptor loaded, P2SH and nested P2WSH, taproot multisig.
 - PSBTv2 fields, taproot script-path spends, MuSig2 and silent payments as signers add them.
-- More signers. Devices with an emulator (Trezor, BitBox02, Coldcard, Ledger) can run the same cases through HWI, or through [bhwi](https://github.com/wizardsardine/bhwi).
+- More signers. Other devices with an emulator (Coldcard, BitBox02, Ledger, Trezor One) can run the same cases through HWI, or through [bhwi](https://github.com/wizardsardine/bhwi).
+- The Trezor emulator in CI.
 
 ## Reporting
 

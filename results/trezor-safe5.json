@@ -1,0 +1,517 @@
+{
+  "baseline-p2pkh": {
+    "warnings": [],
+    "screens": [
+      {
+        "title": "Address Recipient #1",
+        "text": "tb1q9jlu43atmk3xx4 z7ysvwjq2w2cpt3fk2 sh0uge"
+      },
+      {
+        "title": "Amount Recipient #1",
+        "text": "0.006 TEST"
+      },
+      {
+        "title": "Summary",
+        "text": "Total amount 0.0061 TEST incl. Transaction fee 0.0001 TEST"
+      }
+    ],
+    "shown": {
+      "inputs": 1000000,
+      "spend": 600000,
+      "change": 390000,
+      "fee": 10000
+    },
+    "verdict": "sign",
+    "stage": "signed",
+    "sighashes": [
+      1
+    ]
+  },
+  "baseline-p2tr": {
+    "warnings": [],
+    "screens": [
+      {
+        "title": "Address Recipient #1",
+        "text": "tb1q9jlu43atmk3xx4 z7ysvwjq2w2cpt3fk2 sh0uge"
+      },
+      {
+        "title": "Amount Recipient #1",
+        "text": "0.006 TEST"
+      },
+      {
+        "title": "Summary",
+        "text": "Total amount 0.0061 TEST incl. Transaction fee 0.0001 TEST"
+      }
+    ],
+    "shown": {
+      "inputs": 1000000,
+      "spend": 600000,
+      "change": 390000,
+      "fee": 10000
+    },
+    "verdict": "sign",
+    "stage": "signed",
+    "sighashes": [
+      0
+    ]
+  },
+  "baseline-p2wpkh": {
+    "warnings": [],
+    "screens": [
+      {
+        "title": "Address Recipient #1",
+        "text": "tb1q9jlu43atmk3xx4 z7ysvwjq2w2cpt3fk2 sh0uge"
+      },
+      {
+        "title": "Amount Recipient #1",
+        "text": "0.006 TEST"
+      },
+      {
+        "title": "Summary",
+        "text": "Total amount 0.0061 TEST incl. Transaction fee 0.0001 TEST"
+      }
+    ],
+    "shown": {
+      "inputs": 1000000,
+      "spend": 600000,
+      "change": 390000,
+      "fee": 10000
+    },
+    "verdict": "sign",
+    "stage": "signed",
+    "sighashes": [
+      1
+    ]
+  },
+  "baseline-p2wsh-multisig": {
+    "warnings": [],
+    "screens": [
+      {
+        "title": "Address Recipient #1",
+        "text": "tb1q9jlu43atmk3xx4 z7ysvwjq2w2cpt3fk2 sh0uge"
+      },
+      {
+        "title": "Amount Recipient #1",
+        "text": "0.006 TEST"
+      },
+      {
+        "title": "Address Recipient #2",
+        "text": "tb1qrtxcerkky04p7e wn5mrgtxzrc7yje34r x4nn9v52snl0yxnav8 2q0hkc23"
+      },
+      {
+        "title": "Amount Recipient #2",
+        "text": "0.0039 TEST"
+      },
+      {
+        "title": "Summary",
+        "text": "Total amount 0.01 TEST incl. Transaction fee 0.0001 TEST"
+      }
+    ],
+    "shown": {
+      "inputs": 1000000,
+      "spend": 990000,
+      "change": 0,
+      "fee": 10000
+    },
+    "verdict": "sign",
+    "stage": "signed",
+    "sighashes": [
+      1
+    ]
+  },
+  "change-at-huge-index": {
+    "warnings": [],
+    "screens": [
+      {
+        "title": "Address Recipient #1",
+        "text": "tb1q9jlu43atmk3xx4 z7ysvwjq2w2cpt3fk2 sh0uge"
+      },
+      {
+        "title": "Amount Recipient #1",
+        "text": "0.006 TEST"
+      }
+    ],
+    "verdict": "refuse",
+    "stage": "device",
+    "detail": "TrezorFailure: DataError: Forbidden key path"
+  },
+  "change-in-another-account": {
+    "warnings": [],
+    "screens": [
+      {
+        "title": "Address Recipient #1",
+        "text": "tb1q9jlu43atmk3xx4 z7ysvwjq2w2cpt3fk2 sh0uge"
+      },
+      {
+        "title": "Amount Recipient #1",
+        "text": "0.006 TEST"
+      },
+      {
+        "title": "Address SegWit #2",
+        "text": "tb1qkvjfredfz59jwv qru7a2spvugqd7dlx6 e4aqvm"
+      },
+      {
+        "title": "Amount SegWit #2",
+        "text": "0.0039 TEST"
+      },
+      {
+        "title": "Summary",
+        "text": "Total amount 0.01 TEST incl. Transaction fee 0.0001 TEST"
+      }
+    ],
+    "shown": {
+      "inputs": 1000000,
+      "spend": 990000,
+      "change": 0,
+      "fee": 10000
+    },
+    "verdict": "sign",
+    "stage": "signed",
+    "sighashes": [
+      1
+    ]
+  },
+  "change-in-other-script-type": {
+    "warnings": [
+      "Warning"
+    ],
+    "screens": [
+      {
+        "title": "Address Recipient #1",
+        "text": "tb1q9jlu43atmk3xx4 z7ysvwjq2w2cpt3fk2 sh0uge"
+      },
+      {
+        "title": "Amount Recipient #1",
+        "text": "0.006 TEST"
+      },
+      {
+        "title": "Warning",
+        "text": "Wrong derivation path for selected account. m/84'/1'/0'/1/0"
+      },
+      {
+        "title": "Address m/84'/1'/0'/1/0",
+        "text": "mjpZ9GG9z6eWeN9dUd Rmxss9ajYcK47A4p"
+      },
+      {
+        "title": "Amount m/84'/1'/0'/1/0",
+        "text": "0.0039 TEST"
+      },
+      {
+        "title": "Summary",
+        "text": "Total amount 0.01 TEST incl. Transaction fee 0.0001 TEST"
+      }
+    ],
+    "shown": {
+      "inputs": 1000000,
+      "spend": 990000,
+      "change": 0,
+      "fee": 10000
+    },
+    "verdict": "warn",
+    "stage": "signed",
+    "sighashes": [
+      1
+    ]
+  },
+  "change-paid-to-foreign-key": {
+    "warnings": [],
+    "screens": [
+      {
+        "title": "Address Recipient #1",
+        "text": "tb1q9jlu43atmk3xx4 z7ysvwjq2w2cpt3fk2 sh0uge"
+      },
+      {
+        "title": "Amount Recipient #1",
+        "text": "0.006 TEST"
+      },
+      {
+        "title": "Summary",
+        "text": "Total amount 0.0061 TEST incl. Transaction fee 0.0001 TEST"
+      }
+    ],
+    "shown": {
+      "inputs": 1000000,
+      "spend": 600000,
+      "change": 390000,
+      "fee": 10000
+    },
+    "verdict": "no-signature",
+    "stage": "signing",
+    "detail": "no signature valid for the PSBT's transaction"
+  },
+  "legacy-input-without-prev-tx": {
+    "warnings": [],
+    "screens": [
+      {
+        "title": "Address Recipient #1",
+        "text": "tb1q9jlu43atmk3xx4 z7ysvwjq2w2cpt3fk2 sh0uge"
+      },
+      {
+        "title": "Amount Recipient #1",
+        "text": "0.006 TEST"
+      },
+      {
+        "title": "Summary",
+        "text": "Total amount 0.0061 TEST incl. Transaction fee 0.0001 TEST"
+      }
+    ],
+    "shown": {
+      "inputs": 1000000,
+      "spend": 600000,
+      "change": 390000,
+      "fee": 10000
+    },
+    "verdict": "no-signature",
+    "stage": "host (HWI)",
+    "detail": "BadArgumentError: Previous transaction ace2197177006abdd2e5c10b5c81b13b086c7f01d3af732ff7e58567e3bf5bad not available"
+  },
+  "multisig-change-to-attacker-keys-and-xpubs": {
+    "warnings": [],
+    "screens": [
+      {
+        "title": "Address Recipient #1",
+        "text": "tb1q9jlu43atmk3xx4 z7ysvwjq2w2cpt3fk2 sh0uge"
+      },
+      {
+        "title": "Amount Recipient #1",
+        "text": "0.006 TEST"
+      },
+      {
+        "title": "Address Recipient #2",
+        "text": "tb1qadds44mecjl575 m9r64cgj607lra0q8e rl93cwyafdr36zf7uy mqrn5tsk"
+      },
+      {
+        "title": "Amount Recipient #2",
+        "text": "0.0039 TEST"
+      },
+      {
+        "title": "Summary",
+        "text": "Total amount 0.01 TEST incl. Transaction fee 0.0001 TEST"
+      }
+    ],
+    "shown": {
+      "inputs": 1000000,
+      "spend": 990000,
+      "change": 0,
+      "fee": 10000
+    },
+    "verdict": "refuse",
+    "stage": "device",
+    "detail": "TrezorFailure: DataError: Input does not match scriptPubKey"
+  },
+  "multisig-change-to-attacker-keys": {
+    "warnings": [],
+    "screens": [
+      {
+        "title": "Address Recipient #1",
+        "text": "tb1q9jlu43atmk3xx4 z7ysvwjq2w2cpt3fk2 sh0uge"
+      },
+      {
+        "title": "Amount Recipient #1",
+        "text": "0.006 TEST"
+      },
+      {
+        "title": "Address Recipient #2",
+        "text": "tb1q95gglpf6psyscl ruznw65p28e05w29ws m4n6lm6j7p65wp6ley esycl3qg"
+      },
+      {
+        "title": "Amount Recipient #2",
+        "text": "0.0039 TEST"
+      },
+      {
+        "title": "Summary",
+        "text": "Total amount 0.01 TEST incl. Transaction fee 0.0001 TEST"
+      }
+    ],
+    "shown": {
+      "inputs": 1000000,
+      "spend": 990000,
+      "change": 0,
+      "fee": 10000
+    },
+    "verdict": "no-signature",
+    "stage": "signing",
+    "detail": "no signature valid for the PSBT's transaction"
+  },
+  "op-return-with-value": {
+    "warnings": [],
+    "screens": [
+      {
+        "title": "Address Recipient #1",
+        "text": "tb1q9jlu43atmk3xx4 z7ysvwjq2w2cpt3fk2 sh0uge"
+      },
+      {
+        "title": "Amount Recipient #1",
+        "text": "0.003 TEST"
+      }
+    ],
+    "verdict": "refuse",
+    "stage": "device",
+    "detail": "TrezorFailure: DataError: OP_RETURN output with non-zero amount"
+  },
+  "outputs-exceed-inputs": {
+    "warnings": [],
+    "screens": [
+      {
+        "title": "Address Recipient #1",
+        "text": "tb1q9jlu43atmk3xx4 z7ysvwjq2w2cpt3fk2 sh0uge"
+      },
+      {
+        "title": "Amount Recipient #1",
+        "text": "0.01 TEST"
+      }
+    ],
+    "verdict": "refuse",
+    "stage": "device",
+    "detail": "TrezorFailure: NotEnoughFunds: Not enough funds"
+  },
+  "prev-tx-does-not-hash-to-prevout": {
+    "verdict": "refuse",
+    "stage": "host (HWI)",
+    "detail": "PSBTSerializationError: Non-witness UTXO does not match outpoint hash",
+    "warnings": [],
+    "screens": []
+  },
+  "segwit-v0-inputs-without-prev-tx": {
+    "warnings": [],
+    "screens": [
+      {
+        "title": "Address Recipient #1",
+        "text": "tb1q9jlu43atmk3xx4 z7ysvwjq2w2cpt3fk2 sh0uge"
+      },
+      {
+        "title": "Amount Recipient #1",
+        "text": "0.016 TEST"
+      },
+      {
+        "title": "Summary",
+        "text": "Total amount 0.0161 TEST incl. Transaction fee 0.0001 TEST"
+      }
+    ],
+    "shown": {
+      "inputs": 2000000,
+      "spend": 1600000,
+      "change": 390000,
+      "fee": 10000
+    },
+    "verdict": "no-signature",
+    "stage": "host (HWI)",
+    "detail": "BadArgumentError: Previous transaction 6a111a7eea6576d46e7f853005ff47a10145937518249b1ab0d3f4cc608ce9c7 not available"
+  },
+  "sighash-none": {
+    "warnings": [],
+    "screens": [
+      {
+        "title": "Address Recipient #1",
+        "text": "tb1q9jlu43atmk3xx4 z7ysvwjq2w2cpt3fk2 sh0uge"
+      },
+      {
+        "title": "Amount Recipient #1",
+        "text": "0.006 TEST"
+      },
+      {
+        "title": "Summary",
+        "text": "Total amount 0.0061 TEST incl. Transaction fee 0.0001 TEST"
+      }
+    ],
+    "shown": {
+      "inputs": 1000000,
+      "spend": 600000,
+      "change": 390000,
+      "fee": 10000
+    },
+    "verdict": "sign",
+    "stage": "signed",
+    "sighashes": [
+      1
+    ]
+  },
+  "sighash-single-anyonecanpay": {
+    "warnings": [],
+    "screens": [
+      {
+        "title": "Address Recipient #1",
+        "text": "tb1q9jlu43atmk3xx4 z7ysvwjq2w2cpt3fk2 sh0uge"
+      },
+      {
+        "title": "Amount Recipient #1",
+        "text": "0.006 TEST"
+      },
+      {
+        "title": "Summary",
+        "text": "Total amount 0.0061 TEST incl. Transaction fee 0.0001 TEST"
+      }
+    ],
+    "shown": {
+      "inputs": 1000000,
+      "spend": 600000,
+      "change": 390000,
+      "fee": 10000
+    },
+    "verdict": "sign",
+    "stage": "signed",
+    "sighashes": [
+      1
+    ]
+  },
+  "taproot-change-with-hidden-script-path": {
+    "warnings": [],
+    "screens": [
+      {
+        "title": "Address Recipient #1",
+        "text": "tb1q9jlu43atmk3xx4 z7ysvwjq2w2cpt3fk2 sh0uge"
+      },
+      {
+        "title": "Amount Recipient #1",
+        "text": "0.006 TEST"
+      },
+      {
+        "title": "Summary",
+        "text": "Total amount 0.0061 TEST incl. Transaction fee 0.0001 TEST"
+      }
+    ],
+    "shown": {
+      "inputs": 1000000,
+      "spend": 600000,
+      "change": 390000,
+      "fee": 10000
+    },
+    "verdict": "no-signature",
+    "stage": "signing",
+    "detail": "no signature valid for the PSBT's transaction"
+  },
+  "witness-utxo-disagrees-with-prev-tx": {
+    "warnings": [
+      "Important"
+    ],
+    "screens": [
+      {
+        "title": "Address Recipient #1",
+        "text": "tb1q9jlu43atmk3xx4 z7ysvwjq2w2cpt3fk2 sh0uge"
+      },
+      {
+        "title": "Amount Recipient #1",
+        "text": "0.006 TEST"
+      },
+      {
+        "title": "Important",
+        "text": "Unusually high fee."
+      },
+      {
+        "title": "Summary",
+        "text": "Total amount 0.0461 TEST incl. Transaction fee 0.0401 TEST"
+      }
+    ],
+    "shown": {
+      "inputs": 5000000,
+      "spend": 600000,
+      "change": 390000,
+      "fee": 4010000
+    },
+    "verdict": "warn",
+    "stage": "signed",
+    "sighashes": [
+      1
+    ]
+  }
+}

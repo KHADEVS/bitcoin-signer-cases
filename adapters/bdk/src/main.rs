@@ -144,15 +144,34 @@ fn run_case(case: &Value, mode: &str) -> Value {
     // What counts is whether a signature came out: Psbt::sign can sign some inputs and
     // still return an error for others, and those signatures are in the PSBT it hands back.
     let added = signature_count(&psbt) > before;
+    let sighashes = sighash_types(&psbt);
     match (added, signed) {
-        (true, Ok(())) => json!({"verdict": "sign", "stage": "signed", "warnings": [], "shown": shown}),
+        (true, Ok(())) => json!({"verdict": "sign", "stage": "signed", "warnings": [], "shown": shown,
+                                 "sighashes": sighashes}),
         (true, Err(e)) => json!({"verdict": "sign", "stage": "signed", "detail": format!("signed despite: {e}"),
-                                 "warnings": [], "shown": shown}),
+                                 "warnings": [], "shown": shown, "sighashes": sighashes}),
         (false, Err(e)) => json!({"verdict": "no-signature", "stage": "signing", "detail": e,
                                   "warnings": [], "shown": shown}),
         (false, Ok(())) => json!({"verdict": "no-signature", "stage": "signing",
                                   "detail": "no signature added", "warnings": [], "shown": shown}),
     }
+}
+
+/// The sighash types of the signatures in the PSBT, as PSBT sighash values.
+fn sighash_types(psbt: &Psbt) -> Vec<u32> {
+    use bdk_wallet::bitcoin::psbt::PsbtSighashType;
+    let mut types: Vec<u32> = psbt
+        .inputs
+        .iter()
+        .flat_map(|i| {
+            let ecdsa = i.partial_sigs.values().map(|s| PsbtSighashType::from(s.sighash_type).to_u32());
+            let tap = i.tap_key_sig.iter().map(|s| PsbtSighashType::from(s.sighash_type).to_u32());
+            ecdsa.chain(tap).collect::<Vec<_>>()
+        })
+        .collect();
+    types.sort_unstable();
+    types.dedup();
+    types
 }
 
 /// `bitcoin::Psbt::sign` with the wallet's master key.
