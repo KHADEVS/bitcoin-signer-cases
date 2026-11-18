@@ -1,0 +1,29 @@
+{
+  "id": "op-return-with-value",
+  "class": "outputs",
+  "title": "OP_RETURN output carrying 0.003 BTC",
+  "level": "must",
+  "acceptable": [
+    "sign",
+    "warn",
+    "refuse"
+  ],
+  "wallet": {
+    "mnemonic": "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",
+    "network": "testnet",
+    "script_type": "p2wpkh",
+    "account": "m/84h/1h/0h"
+  },
+  "psbt": "cHNidP8BAIACAAAAAbeD8xKQjtaPVeZmWXz4kzfkVI2cBtr8vovn+8+5fz14AAAAAAD9////A+CTBAAAAAAAFgAULL/Kx6vdomNUXiQY6QFOVgK4psrgkwQAAAAAAAZqBGJ1cm5w8wUAAAAAABYAFC80qhzwClOwVaKRoDp9RfCmmItSAAAAAAABAFICAAAAAQwtW5fVjpolwVBoBx4FJNA9+cRDvvLhdfUauvb0X02vAAAAAAD/////AUBCDwAAAAAAFgAU0MSj7wnpl7bpnjl+UY/j5BoRjKEAAAAAAQEfQEIPAAAAAAAWABTQxKPvCemXtumeOX5Rj+PkGhGMoSIGAuerJTe11J6XAwmq4G6eSfNs4cn+u9ROyODRzKC0+cMZGHPF2gpUAACAAQAAgAAAAIAAAAAAAAAAAAAAACICA11J7M1U0AmeQ2did8em1GJdYR2oil30m/lReneRp3elGHPF2gpUAACAAQAAgAAAAIABAAAAAAAAAAA=",
+  "honest_view": {
+    "inputs": 1000000,
+    "spend": 600000,
+    "change": 390000,
+    "fee": 10000
+  },
+  "attack": "An OP_RETURN output carries 300,000 sats. They are destroyed, not sent. A signer that skips data outputs when it adds up what is sent shows less leaving the wallet than actually does.",
+  "rule": "Count the value of every output, OP_RETURN included, and show that it is burned.",
+  "refs": [
+    "https://github.com/bitcoin/bips/blob/master/bip-0174.mediawiki"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "id": "taproot-change-with-hidden-script-path",
+  "class": "change",
+  "title": "Taproot change whose output key hides a script path for someone else",
+  "level": "must",
+  "acceptable": [
+    "sign",
+    "warn",
+    "refuse"
+  ],
+  "wallet": {
+    "mnemonic": "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",
+    "network": "testnet",
+    "script_type": "p2tr",
+    "account": "m/86h/1h/0h"
+  },
+  "psbt": "cHNidP8BAH0CAAAAASJHB5Llrai5SlPUA7bGr+pnG157d9gBgk927kZi943iAAAAAAD9////AsAnCQAAAAAAFgAULL/Kx6vdomNUXiQY6QFOVgK4pspw8wUAAAAAACJRIGrARKzS95yiS9c4gANKxiXyPfQcw7iqtluwJYekouBkAAAAAAABAF4CAAAAAXadsrAIcah8OnuY52bA3SSuxOnN4V428KltGWypCxOlAAAAAAD/////AUBCDwAAAAAAIlEgO4KysqkYUxXab4DaXwbQRA2KXhRX+pM4fC2RnIbsh4YAAAAAAQErQEIPAAAAAAAiUSA7grKyqRhTFdpvgNpfBtBEDYpeFFf6kzh8LZGchuyHhiEWVTVcqDyXPx2Xzg44Q8hdeJBa8WtNxTG8SI5XIS0jARYZAHPF2gpWAACAAQAAgAAAAIAAAAAAAAAAAAEXIFU1XKg8lz8dl84OOEPIXXiQWvFrTcUxvEiOVyEtIwEWAAABBSCxCsl/Z2zx88zaywt4FxKCu+lKlN8UMgFwDcWbzBXzaCEHsQrJf2ds8fPM2ssLeBcSgrvpSpTfFDIBcA3Fm8wV82gZAHPF2gpWAACAAQAAgAAAAIABAAAAAAAAAAA=",
+  "honest_view": {
+    "inputs": 1000000,
+    "spend": 990000,
+    "change": 0,
+    "fee": 10000
+  },
+  "attack": "The change output's internal key is ours at the change path, but the output key is tweaked with a script tree holding a single leaf, <foreign key> OP_CHECKSIG. The attacker can spend the 'change' through that leaf without our key.",
+  "rule": "Rebuild the BIP-86 output key (no script tree) and count the output as a spend unless it matches.",
+  "refs": [
+    "https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki",
+    "https://github.com/bitcoin/bips/blob/master/bip-0086.mediawiki"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "id": "prev-tx-does-not-hash-to-prevout",
+  "class": "input-amounts",
+  "title": "Previous transaction that is not the one the input spends",
+  "level": "must",
+  "acceptable": [
+    "refuse"
+  ],
+  "wallet": {
+    "mnemonic": "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",
+    "network": "testnet",
+    "script_type": "p2wpkh",
+    "account": "m/84h/1h/0h"
+  },
+  "psbt": "cHNidP8BAHECAAAAAfir/uKcwYU9RJS4K7043hyavkUfYD0Wk9gBleH0FQBHAAAAAAD9////AsAnCQAAAAAAFgAULL/Kx6vdomNUXiQY6QFOVgK4pspw8wUAAAAAABYAFC80qhzwClOwVaKRoDp9RfCmmItSAAAAAAABAFICAAAAAVQ3WByZl5QcO4Ohckx/QLrltatbM75icUwaegNT2Dh+AAAAAAD/////AUBCDwAAAAAAFgAU0MSj7wnpl7bpnjl+UY/j5BoRjKEAAAAAAQEfQEIPAAAAAAAWABTQxKPvCemXtumeOX5Rj+PkGhGMoSIGAuerJTe11J6XAwmq4G6eSfNs4cn+u9ROyODRzKC0+cMZGHPF2gpUAACAAQAAgAAAAIAAAAAAAAAAAAAAIgIDXUnszVTQCZ5DZ2J3x6bUYl1hHaiKXfSb+VF6d5Gnd6UYc8XaClQAAIABAACAAAAAgAEAAAAAAAAAAA==",
+  "honest_view": {
+    "inputs": 1000000,
+    "spend": 600000,
+    "change": 390000,
+    "fee": 10000
+  },
+  "attack": "The previous transaction attached to the input is a different transaction, so it proves nothing about the coin being spent.",
+  "rule": "Check that the previous transaction hashes to the txid the input spends, and refuse otherwise.",
+  "refs": [
+    "https://github.com/bitcoin/bips/blob/master/bip-0174.mediawiki"
+  ]
+}

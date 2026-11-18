@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  cases:
+    name: Cases and results
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch each signer at the commit in results/targets.json
+        run: |
+          ss=$(jq -r '.[] | select(.name == "seedsigner-dev") | .commit' results/targets.json)
+          kx=$(jq -r '.[] | select(.name == "krux-develop") | .commit' results/targets.json)
+          git clone -q --filter=blob:none https://github.com/SeedSigner/seedsigner.git ../seedsigner
+          git -C ../seedsigner checkout -q "$ss"
+          git clone -q --filter=blob:none https://github.com/selfcustody/krux.git ../krux
+          git -C ../krux checkout -q "$kx"
+          git -C ../krux submodule update -q --init vendor/embit
+
+      - name: Python environments
+        run: |
+          python -m venv ../venv-ss
+          ../venv-ss/bin/pip install -q -r requirements.txt
+          python -m venv ../venv-krux
+          ../venv-krux/bin/pip install -q pyqrcode==1.2.1
+
+      - name: The cases rebuild exactly as committed
+        run: |
+          ../venv-ss/bin/python -I gen/gen.py
+          git diff --exit-code -- cases
+
+      - name: Each signer still does what results/ records
+        run: |
+          ../venv-ss/bin/python -I adapters/seedsigner_adapter.py ../seedsigner cases > results/seedsigner-dev.json
+          ../venv-krux/bin/python -I adapters/krux_adapter.py ../krux cases > results/krux-develop.json
+          ../venv-ss/bin/python -I report.py > /dev/null
+          git diff --exit-code -- results

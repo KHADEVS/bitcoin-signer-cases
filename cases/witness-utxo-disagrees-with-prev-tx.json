@@ -1,0 +1,27 @@
+{
+  "id": "witness-utxo-disagrees-with-prev-tx",
+  "class": "input-amounts",
+  "title": "Witness UTXO that contradicts the previous transaction",
+  "level": "must",
+  "acceptable": [
+    "refuse"
+  ],
+  "wallet": {
+    "mnemonic": "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",
+    "network": "testnet",
+    "script_type": "p2wpkh",
+    "account": "m/84h/1h/0h"
+  },
+  "psbt": "cHNidP8BAHECAAAAAd3FfJIKRO44OEtoIv5cF9blvCandC/N5uZ66T6qzr6zAAAAAAD9////AsAnCQAAAAAAFgAULL/Kx6vdomNUXiQY6QFOVgK4pspw8wUAAAAAABYAFC80qhzwClOwVaKRoDp9RfCmmItSAAAAAAABAFICAAAAAV73uQjHcYuVA+29NcAVrSyyqoTjcgZfYhQtLp8lVgZZAAAAAAD/////AUBLTAAAAAAAFgAU0MSj7wnpl7bpnjl+UY/j5BoRjKEAAAAAAQEfQEIPAAAAAAAWABTQxKPvCemXtumeOX5Rj+PkGhGMoSIGAuerJTe11J6XAwmq4G6eSfNs4cn+u9ROyODRzKC0+cMZGHPF2gpUAACAAQAAgAAAAIAAAAAAAAAAAAAAIgIDXUnszVTQCZ5DZ2J3x6bUYl1hHaiKXfSb+VF6d5Gnd6UYc8XaClQAAIABAACAAAAAgAEAAAAAAAAAAA==",
+  "honest_view": {
+    "inputs": 5000000,
+    "spend": 600000,
+    "change": 390000,
+    "fee": 4010000
+  },
+  "attack": "The previous transaction says the coin holds 0.05 BTC, the witness UTXO says 0.01 BTC. A signer that reads the second for the fee shows 10,000 sats.",
+  "rule": "Refuse an input whose witness UTXO differs from the output it points to in the previous transaction.",
+  "refs": [
+    "https://github.com/bitcoin/bips/blob/master/bip-0174.mediawiki"
+  ]
+}

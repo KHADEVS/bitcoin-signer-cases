@@ -1,0 +1,29 @@
+{
+  "id": "change-in-another-account",
+  "class": "change",
+  "title": "Change sent to another account of the same seed",
+  "level": "should",
+  "acceptable": [
+    "sign",
+    "warn",
+    "refuse"
+  ],
+  "wallet": {
+    "mnemonic": "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",
+    "network": "testnet",
+    "script_type": "p2wpkh",
+    "account": "m/84h/1h/0h"
+  },
+  "psbt": "cHNidP8BAHECAAAAASU0iwTtDnvkGN9nsLBwemGw6+uJ98I+tOIecBhVHN6tAAAAAAD9////AsAnCQAAAAAAFgAULL/Kx6vdomNUXiQY6QFOVgK4pspw8wUAAAAAABYAFLMkkeWpFQsnMAPnuqgFnEAb5vzaAAAAAAABAFICAAAAAew7UCgqnx2O3wCfIpScVu3NjTOziQGz6w4QjS9+oP1fAAAAAAD/////AUBCDwAAAAAAFgAU0MSj7wnpl7bpnjl+UY/j5BoRjKEAAAAAAQEfQEIPAAAAAAAWABTQxKPvCemXtumeOX5Rj+PkGhGMoSIGAuerJTe11J6XAwmq4G6eSfNs4cn+u9ROyODRzKC0+cMZGHPF2gpUAACAAQAAgAAAAIAAAAAAAAAAAAAAIgIDeAtpbVMN70JLgDaMX0AdEvv3tZpWylWasIPf0q9AVWgYc8XaClQAAIABAACAAQAAgAEAAAAAAAAAAA==",
+  "honest_view": {
+    "inputs": 1000000,
+    "spend": 990000,
+    "change": 0,
+    "fee": 10000
+  },
+  "attack": "The change goes to account 1 of our seed while the coins and the wallet are account 0. The seed can spend it, the wallet in use will not show it.",
+  "rule": "Show it as a spend (or warn): it is not change of the account being used.",
+  "refs": [
+    "https://github.com/bitcoin/bips/blob/master/bip-0174.mediawiki"
+  ]
+}

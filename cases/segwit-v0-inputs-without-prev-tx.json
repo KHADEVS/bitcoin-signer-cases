@@ -1,0 +1,29 @@
+{
+  "id": "segwit-v0-inputs-without-prev-tx",
+  "class": "input-amounts",
+  "title": "Two segwit v0 inputs with no previous transactions",
+  "level": "should",
+  "acceptable": [
+    "refuse",
+    "warn"
+  ],
+  "wallet": {
+    "mnemonic": "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",
+    "network": "testnet",
+    "script_type": "p2wpkh",
+    "account": "m/84h/1h/0h"
+  },
+  "psbt": "cHNidP8BAJoCAAAAAsfpjGDM9NOwGpskGHWTRQGhR/8FMIV/btR2Zep+GhFqAAAAAAD9////ce9lwVVg2DolFmwIKMqb9AsTeU1v2KvEYPqto+Y5NTUAAAAAAP3///8CAGoYAAAAAAAWABQsv8rHq92iY1ReJBjpAU5WArimynDzBQAAAAAAFgAULzSqHPAKU7BVopGgOn1F8KaYi1IAAAAAAAEBH0BCDwAAAAAAFgAU0MSj7wnpl7bpnjl+UY/j5BoRjKEiBgLnqyU3tdSelwMJquBunknzbOHJ/rvUTsjg0cygtPnDGRhzxdoKVAAAgAEAAIAAAACAAAAAAAAAAAAAAQEfQEIPAAAAAAAWABRvoBZQCjxqc367Jg4t3KeLqSNFWCIGA+7tIFppAi/tSmKgJFfzaZsZwGv3S/gBrMbZroS8FqnhGHPF2gpUAACAAQAAgAAAAIAAAAAAAQAAAAAAIgIDXUnszVTQCZ5DZ2J3x6bUYl1hHaiKXfSb+VF6d5Gnd6UYc8XaClQAAIABAACAAAAAgAEAAAAAAAAAAA==",
+  "honest_view": {
+    "inputs": 2000000,
+    "spend": 1600000,
+    "change": 390000,
+    "fee": 10000
+  },
+  "attack": "Nothing is false here, but nothing proves the amounts either. BIP-143 commits each signature to its own input's amount only, so a coordinator can understate a different input in each of two signing rounds and combine one valid signature from each: the fee actually paid is larger than either screen showed.",
+  "rule": "Ask for the previous transactions, or tell the user the input amounts are unverified.",
+  "refs": [
+    "https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki",
+    "https://blog.trezor.io/details-of-firmware-updates-for-trezor-one-version-1-9-1-and-trezor-model-t-version-2-3-1-1eba8f60f2dd"
+  ]
+}

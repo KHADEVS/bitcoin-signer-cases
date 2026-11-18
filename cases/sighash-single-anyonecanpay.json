@@ -1,0 +1,29 @@
+{
+  "id": "sighash-single-anyonecanpay",
+  "class": "sighash",
+  "title": "Input asking for SIGHASH_SINGLE|ANYONECANPAY",
+  "level": "must",
+  "acceptable": [
+    "refuse",
+    "no-signature"
+  ],
+  "wallet": {
+    "mnemonic": "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",
+    "network": "testnet",
+    "script_type": "p2wpkh",
+    "account": "m/84h/1h/0h"
+  },
+  "psbt": "cHNidP8BAHECAAAAAUUN6n3clRkXwPyraN+eiC5P4eNikQJKKy+z4xM003z4AAAAAAD9////AsAnCQAAAAAAFgAULL/Kx6vdomNUXiQY6QFOVgK4pspw8wUAAAAAABYAFC80qhzwClOwVaKRoDp9RfCmmItSAAAAAAABAFICAAAAAfrXiDK7jTpAdqJb0UwD10KE5Ett49+rSsO84lJuE7F3AAAAAAD/////AUBCDwAAAAAAFgAU0MSj7wnpl7bpnjl+UY/j5BoRjKEAAAAAAQEfQEIPAAAAAAAWABTQxKPvCemXtumeOX5Rj+PkGhGMoQEDBIMAAAAiBgLnqyU3tdSelwMJquBunknzbOHJ/rvUTsjg0cygtPnDGRhzxdoKVAAAgAEAAIAAAACAAAAAAAAAAAAAACICA11J7M1U0AmeQ2did8em1GJdYR2oil30m/lReneRp3elGHPF2gpUAACAAQAAgAAAAIABAAAAAAAAAAA=",
+  "honest_view": {
+    "inputs": 1000000,
+    "spend": 600000,
+    "change": 390000,
+    "fee": 10000
+  },
+  "attack": "The input asks to be signed with sighash 0x83. The resulting signature does not cover all the outputs, so whoever holds it can redirect the funds after the user approved the screen.",
+  "rule": "Never produce a signature with a sighash other than ALL (or DEFAULT on taproot) without telling the user; refusing is simplest.",
+  "refs": [
+    "https://github.com/bitcoin/bips/blob/master/bip-0174.mediawiki",
+    "https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "id": "baseline-p2tr",
+  "class": "baseline",
+  "title": "Honest p2tr spend with change",
+  "level": "baseline",
+  "acceptable": [
+    "sign"
+  ],
+  "wallet": {
+    "mnemonic": "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",
+    "network": "testnet",
+    "script_type": "p2tr",
+    "account": "m/86h/1h/0h"
+  },
+  "psbt": "cHNidP8BAH0CAAAAAZlRVBe4UJTD6++mf6IkQOO+9kWb15Dpuv7/s0cXlLZlAAAAAAD9////AsAnCQAAAAAAFgAULL/Kx6vdomNUXiQY6QFOVgK4pspw8wUAAAAAACJRINc6z2Znt4UObgDiG7RSWixeLYiVaj0sNbC8BvSw3wG8AAAAAAABAF4CAAAAAf9DI2Zh3K5cO5OJxanRF7jyWbqWXrCSJ1QChpn+bOjGAAAAAAD/////AUBCDwAAAAAAIlEgO4KysqkYUxXab4DaXwbQRA2KXhRX+pM4fC2RnIbsh4YAAAAAAQErQEIPAAAAAAAiUSA7grKyqRhTFdpvgNpfBtBEDYpeFFf6kzh8LZGchuyHhiEWVTVcqDyXPx2Xzg44Q8hdeJBa8WtNxTG8SI5XIS0jARYZAHPF2gpWAACAAQAAgAAAAIAAAAAAAAAAAAEXIFU1XKg8lz8dl84OOEPIXXiQWvFrTcUxvEiOVyEtIwEWAAABBSCxCsl/Z2zx88zaywt4FxKCu+lKlN8UMgFwDcWbzBXzaCEHsQrJf2ds8fPM2ssLeBcSgrvpSpTfFDIBcA3Fm8wV82gZAHPF2gpWAACAAQAAgAAAAIABAAAAAAAAAAA=",
+  "honest_view": {
+    "inputs": 1000000,
+    "spend": 600000,
+    "change": 390000,
+    "fee": 10000
+  },
+  "attack": "None. One of our coins pays a foreign address and the rest comes back as change.",
+  "rule": "Sign, showing the amount sent, the change and the fee.",
+  "refs": [
+    "https://github.com/bitcoin/bips/blob/master/bip-0174.mediawiki"
+  ]
+}

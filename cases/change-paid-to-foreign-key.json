@@ -1,0 +1,29 @@
+{
+  "id": "change-paid-to-foreign-key",
+  "class": "change",
+  "title": "Change claimed with our key and path, paid to someone else",
+  "level": "must",
+  "acceptable": [
+    "sign",
+    "warn",
+    "refuse"
+  ],
+  "wallet": {
+    "mnemonic": "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",
+    "network": "testnet",
+    "script_type": "p2wpkh",
+    "account": "m/84h/1h/0h"
+  },
+  "psbt": "cHNidP8BAHECAAAAAe7cmqREIbR+N0twEYrSxfkPi9sE3h7oIifvorFR+zfaAAAAAAD9////AsAnCQAAAAAAFgAULL/Kx6vdomNUXiQY6QFOVgK4pspw8wUAAAAAABYAFNKzvSOGyfk1WOihlhWR24R0Di74AAAAAAABAFICAAAAAbWxesufrK7unlFAiwOHIswsrb9ID87+PP1Vfr6qJADsAAAAAAD/////AUBCDwAAAAAAFgAU0MSj7wnpl7bpnjl+UY/j5BoRjKEAAAAAAQEfQEIPAAAAAAAWABTQxKPvCemXtumeOX5Rj+PkGhGMoSIGAuerJTe11J6XAwmq4G6eSfNs4cn+u9ROyODRzKC0+cMZGHPF2gpUAACAAQAAgAAAAIAAAAAAAAAAAAAAIgIDXUnszVTQCZ5DZ2J3x6bUYl1hHaiKXfSb+VF6d5Gnd6UYc8XaClQAAIABAACAAAAAgAEAAAAAAAAAAA==",
+  "honest_view": {
+    "inputs": 1000000,
+    "spend": 990000,
+    "change": 0,
+    "fee": 10000
+  },
+  "attack": "The second output carries our public key and change path in its PSBT metadata, but its script pays a foreign key. A signer that trusts the metadata hides a 0.0039 BTC payment to the attacker as change.",
+  "rule": "Rebuild the output script from the seed at the claimed path and count the output as a spend unless it matches.",
+  "refs": [
+    "https://github.com/bitcoin/bips/blob/master/bip-0174.mediawiki"
+  ]
+}

@@ -1,0 +1,25 @@
+[
+  {
+    "name": "seedsigner-dev",
+    "repo": "SeedSigner/seedsigner",
+    "branch": "dev",
+    "commit": "5f321768bad3861522c25b533261d2b573c06076",
+    "embit": "0.8.0 (PyPI)",
+    "notes": [
+      "the latest release, 0.8.7 (June 2026), predates every PSBT check merged since September 2026 and is not tested here.",
+      "`op-return-with-value`: the value of an OP_RETURN output is counted in no total at this commit. Open PR [SeedSigner#1043](https://github.com/SeedSigner/seedsigner/pull/1043) shows each OP_RETURN output and what it burns.",
+      "`segwit-v0-inputs-without-prev-tx`: documented in `PSBTParser._verify_input_amounts_and_scripts` as a known limitation."
+    ]
+  },
+  {
+    "name": "krux-develop",
+    "repo": "selfcustody/krux",
+    "branch": "develop",
+    "commit": "bf91b52c61baacd74f8e73453028a2d569ba93ce",
+    "embit": "selfcustody fork `d38d43a` (vendored)",
+    "notes": [
+      "the latest release, 26.09.0 (September 2026), is not tested here.",
+      "`op-return-with-value`: any PSBT with an OP_RETURN output is refused with a TypeError during review, which is safe. Open PR [krux#969](https://github.com/selfcustody/krux/pull/969) shows OP_RETURN outputs."
+    ]
+  }
+]

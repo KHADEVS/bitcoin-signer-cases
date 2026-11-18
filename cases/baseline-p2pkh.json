@@ -1,0 +1,27 @@
+{
+  "id": "baseline-p2pkh",
+  "class": "baseline",
+  "title": "Honest p2pkh spend with change",
+  "level": "baseline",
+  "acceptable": [
+    "sign"
+  ],
+  "wallet": {
+    "mnemonic": "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",
+    "network": "testnet",
+    "script_type": "p2pkh",
+    "account": "m/44h/1h/0h"
+  },
+  "psbt": "cHNidP8BAHQCAAAAAcADj6lz6HccpVLl498GCyi9VK6PQdmyXUxGn8nObz9SAAAAAAD9////AsAnCQAAAAAAFgAULL/Kx6vdomNUXiQY6QFOVgK4pspw8wUAAAAAABl2qRQctzkgtaw49GDjjetoS5xKQI/zwIisAAAAAAABAFUCAAAAAQVEwvIF45muCndBpS/eWuiLtz5uc+os/RGhKrcz4fedAAAAAAD/////AUBCDwAAAAAAGXapFDotQUWk8JhSOz6BJ/Hah8/FW455iKwAAAAAIgYCp0UTlXNTafLs38gpwPd06I7xMD3+Wy8E26qzClNd/dYYc8XaCiwAAIABAACAAAAAgAAAAAAAAAAAAAAiAgMgKCrGs3gnIbF0LClFMKnyUEEzYau/9lmsyDUrxMHz8RhzxdoKLAAAgAEAAIAAAACAAQAAAAAAAAAA",
+  "honest_view": {
+    "inputs": 1000000,
+    "spend": 600000,
+    "change": 390000,
+    "fee": 10000
+  },
+  "attack": "None. One of our coins pays a foreign address and the rest comes back as change.",
+  "rule": "Sign, showing the amount sent, the change and the fee.",
+  "refs": [
+    "https://github.com/bitcoin/bips/blob/master/bip-0174.mediawiki"
+  ]
+}

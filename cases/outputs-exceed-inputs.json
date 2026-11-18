@@ -1,0 +1,27 @@
+{
+  "id": "outputs-exceed-inputs",
+  "class": "input-amounts",
+  "title": "Outputs worth more than the inputs",
+  "level": "must",
+  "acceptable": [
+    "refuse"
+  ],
+  "wallet": {
+    "mnemonic": "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",
+    "network": "testnet",
+    "script_type": "p2wpkh",
+    "account": "m/84h/1h/0h"
+  },
+  "psbt": "cHNidP8BAHECAAAAAY4IEuNPVBa/XQCF03f+kuV9UVo4pDakXe5pJ9UQsRAKAAAAAAD9////AkBCDwAAAAAAFgAULL/Kx6vdomNUXiQY6QFOVgK4pspw8wUAAAAAABYAFC80qhzwClOwVaKRoDp9RfCmmItSAAAAAAABAFICAAAAAc2+Yj8OMsiM8uFbjofx3dD6CxTO/UV3GFEKkEXBWFM5AAAAAAD/////AUBCDwAAAAAAFgAU0MSj7wnpl7bpnjl+UY/j5BoRjKEAAAAAAQEfQEIPAAAAAAAWABTQxKPvCemXtumeOX5Rj+PkGhGMoSIGAuerJTe11J6XAwmq4G6eSfNs4cn+u9ROyODRzKC0+cMZGHPF2gpUAACAAQAAgAAAAIAAAAAAAAAAAAAAIgIDXUnszVTQCZ5DZ2J3x6bUYl1hHaiKXfSb+VF6d5Gnd6UYc8XaClQAAIABAACAAAAAgAEAAAAAAAAAAA==",
+  "honest_view": {
+    "inputs": 1000000,
+    "spend": 1000000,
+    "change": 390000,
+    "fee": -390000
+  },
+  "attack": "The outputs add up to more than the inputs. The transaction is invalid, and a signer that subtracts naively shows a negative fee, which reads like a cheap transaction.",
+  "rule": "Refuse a PSBT whose outputs exceed its inputs.",
+  "refs": [
+    "https://github.com/bitcoin/bips/blob/master/bip-0174.mediawiki"
+  ]
+}
