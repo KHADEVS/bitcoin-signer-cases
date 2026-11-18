@@ -105,7 +105,9 @@
       "spend": 300000,
       "change": 390000,
       "fee": 10000,
-      "op_return": "6275726e"
+      "op_return": [
+        "6275726e"
+      ]
     }
   },
   "outputs-exceed-inputs": {

@@ -27,14 +27,21 @@ def run_case(case, PSBT, PSBTParser, Seed, network):
     except Exception as e:  # the flow routes every parser error to an error screen
         return {"verdict": "refuse", "stage": "review", "detail": "%s: %s" % (type(e).__name__, e)}
 
+    # Value burned in OP_RETURN outputs leaves the wallet too, so it counts as spent.
+    # Newer code totals it separately as burn_amount; older code counts it nowhere.
+    burn = getattr(parser, "burn_amount", 0)
     shown = {
         "inputs": parser.verified_input_amount,
-        "spend": parser.spend_amount,
+        "spend": parser.spend_amount + burn,
         "change": parser.change_amount,
         "fee": parser.fee_amount,
     }
-    if parser.op_return_data is not None:
-        shown["op_return"] = parser.op_return_data.hex()
+    if burn:
+        shown["burn"] = burn
+    payloads = parser.op_return_data
+    if payloads:
+        payloads = payloads if isinstance(payloads, list) else [payloads]
+        shown["op_return"] = [p.hex() for p in payloads]
     warnings = list(parser.warnings)
 
     if "descriptor" in case["wallet"]:
