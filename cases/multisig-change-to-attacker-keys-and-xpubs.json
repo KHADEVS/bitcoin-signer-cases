@@ -1,0 +1,30 @@
+{
+  "id": "multisig-change-to-attacker-keys-and-xpubs",
+  "class": "change",
+  "title": "Multisig change to attacker keys, with global xpubs that vouch for them",
+  "level": "must",
+  "acceptable": [
+    "sign",
+    "warn",
+    "refuse"
+  ],
+  "wallet": {
+    "mnemonic": "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",
+    "network": "testnet",
+    "script_type": "p2wsh",
+    "account": "m/48h/1h/0h/2h",
+    "descriptor": "wsh(sortedmulti(2,[73c5da0a/48h/1h/0h/2h]tpubDFH9dgzveyD8zTbPUFuLrGmCydNvxehyNdUXKJAQN8x4aZ4j6UZqGfnqFrD4NqyaTVGKbvEW54tsvPTK2UoSbCC1PJY8iCNiwTL3RWZEheQ/<0;1>/*,[2849e5c5/48h/1h/0h/2h]tpubDFWLfJQr8KojD7QLjiUchL92y3aLmkTvxD4GFinANC1NFDCLscZdTmgvUUmT9kVMgad7NksBRHZMVEKqNR25r3Rwk6gMmLwLaHybkt4bhz1/<0;1>/*,[bc8d5dcb/48h/1h/0h/2h]tpubDF4rMdBgS4jeWhDkdAtBpSaHTVNJr4w86gSz4T7jgUnmzyGuF86rDjY23PSf22DNq6EvzDf3rBMyYhvVMBMsC3DG4P38XRCDhdTjzY6znKu/<0;1>/*))#8ykrqhm4"
+  },
+  "psbt": "cHNidP8BAH0CAAAAAT7jFK0hkYeXZIvP7ojbVZPworZntfJONZoDylfrRfIfAAAAAAD9////AsAnCQAAAAAAFgAULL/Kx6vdomNUXiQY6QFOVgK4pspw8wUAAAAAACIAIOtbCtd5xL9PU2Ueq4RLT/fH14D5H8scOJ1LRx0JPuE2AAAAAE8BBDWHzwS6wUg5gAAAAh1Pvr3ZZ+GvcUwJl9OPz2cLXOnTAcBEC7zDtqIOt3IcA1aOofNgUZFu0baQw54SqOcGA7KAvTDOXygfKRilU2OqFHPF2gowAACAAQAAgAAAAIACAACATwEENYfPBBAAJS2AAAACBMOraheW5lNlyRoQWQrGCl/D0yqNOzCGyKxSZC9tLp8Du7bq+eAd6SLhGSKz9dx/esJshtud+cipNRQhTHB3cU4UKEnlxTAAAIABAACAAAAAgAIAAIBPAQQ1h88E19RInIAAAAK76XpSxLkeqNvjtTTYELHVgjsgSbK2CANHFBFd5oCYdQMxHuMrYnq+j3IyUINlZ1NmxzHTi1T9judOvomWQqkvBRS8jV3LMAAAgAEAAIAAAACAAgAAgAABAF4CAAAAAfMP2Rw6UmM/+2xVqa4Pg2MXT97AuyjNy1u6UmmtH0dkAAAAAAD/////AUBCDwAAAAAAIgAgdMsTzNdqltq6yNFpmV1jVd5nhfdLNje1rh1i1DvcAG4AAAAAAQErQEIPAAAAAAAiACB0yxPM12qW2rrI0WmZXWNV3meF90s2N7WuHWLUO9wAbgEFaVIhAwuQ7S6GutfypP6XabtBfXupyqESSAfb+zYt++62Xn4BIQNm7VacUcjM4mzrfUtIqK+3fxae3UmJrnFr4BmdD7IKBiEDZ+WA6hiDeJECE58KRqrkq4YG0umsgs79CAI0PRxoB/dTriIGAwuQ7S6GutfypP6XabtBfXupyqESSAfb+zYt++62Xn4BHHPF2gowAACAAQAAgAAAAIACAACAAAAAAAAAAAAiBgNn5YDqGIN4kQITnwpGquSrhgbS6ayCzv0IAjQ9HGgH9xwoSeXFMAAAgAEAAIAAAACAAgAAgAAAAAAAAAAAIgYDZu1WnFHIzOJs631LSKivt38Wnt1Jia5xa+AZnQ+yCgYcvI1dyzAAAIABAACAAAAAgAIAAIAAAAAAAAAAAAAAAQFpUiECDZSDhk+M2HeZWIUJTrVMz0HuqXY71kcrFN84fdkDx+8hA6B9O+C61jyANdIcl7QQiQ09OhnS5AOvs/z8aCaqJjx2IQPCRccqU6FpCPPOLoiWvN3969ivXHrYqbvhXD2kcPUpk1OuIgIDoH074LrWPIA10hyXtBCJDT06GdLkA6+z/PxoJqomPHYcc8XaCjAAAIABAACAAAAAgAIAAIABAAAAAAAAACICAg2Ug4ZPjNh3mViFCU61TM9B7ql2O9ZHKxTfOH3ZA8fvHChJ5cUwAACAAQAAgAAAAIACAACAAQAAAAAAAAAiAgPCRccqU6FpCPPOLoiWvN3969ivXHrYqbvhXD2kcPUpkxy8jV3LMAAAgAEAAIAAAACAAgAAgAEAAAAAAAAAAA==",
+  "honest_view": {
+    "inputs": 1000000,
+    "spend": 990000,
+    "change": 0,
+    "fee": 10000
+  },
+  "attack": "As in multisig-change-to-attacker-keys, and the PSBT's global xpubs are swapped too: the attacker's account xpubs, under the real cosigners' fingerprints, so the change keys trace back to listed xpubs. A signer that takes the cosigners from the global xpubs rather than from the descriptor the user loaded sees a consistent wallet.",
+  "rule": "Take the cosigners from the descriptor the user loaded, never from the PSBT's global xpubs.",
+  "refs": [
+    "https://github.com/bitcoin/bips/blob/master/bip-0174.mediawiki"
+  ]
+}

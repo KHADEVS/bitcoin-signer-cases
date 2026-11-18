@@ -19,7 +19,8 @@ from embit.ec import PublicKey
 from embit.hashes import tagged_hash
 from embit.networks import NETWORKS
 from embit.psbt import PSBT, DerivationPath
-from embit.script import Script, p2pkh, p2tr, p2wpkh
+from embit.descriptor.checksum import add_checksum
+from embit.script import Script, multisig, p2pkh, p2tr, p2wpkh, p2wsh
 from embit.transaction import Transaction, TransactionInput, TransactionOutput
 
 # The BIP-39 test mnemonic. Every case is on testnet.
@@ -38,6 +39,7 @@ ACCOUNTS = {
     "p2pkh": "m/44h/1h/0h",
     "p2wpkh": "m/84h/1h/0h",
     "p2tr": "m/86h/1h/0h",
+    "p2wsh": "m/48h/1h/0h/2h",
 }
 
 SIGHASH_TYPES = {"none": 0x02, "single-anyonecanpay": 0x83}
@@ -131,7 +133,16 @@ def truth(inputs, spend, change):
 CASES = []
 
 
-def case(id, cls, title, level, acceptable, script_type, psbt, honest, attack, rule, refs):
+def case(id, cls, title, level, acceptable, script_type, psbt, honest, attack, rule, refs, descriptor=None):
+    wallet = {
+        "mnemonic": MNEMONIC,
+        "network": "testnet",
+        "script_type": script_type,
+        "account": ACCOUNTS[script_type],
+    }
+    if descriptor is not None:
+        # A multisig wallet: the descriptor the user loaded on the device beforehand
+        wallet["descriptor"] = descriptor
     CASES.append(
         {
             "id": id,
@@ -139,12 +150,7 @@ def case(id, cls, title, level, acceptable, script_type, psbt, honest, attack, r
             "title": title,
             "level": level,
             "acceptable": acceptable,
-            "wallet": {
-                "mnemonic": MNEMONIC,
-                "network": "testnet",
-                "script_type": script_type,
-                "account": ACCOUNTS[script_type],
-            },
+            "wallet": wallet,
             "psbt": b64encode(psbt.serialize()).decode(),
             "honest_view": honest,
             "attack": attack,
@@ -413,6 +419,147 @@ case(
     "actually does.",
     "Count the value of every output, OP_RETURN included, and show that it is burned.",
     [BIP174],
+)
+
+
+# --- Multisig: a 2-of-3 P2WSH wallet whose descriptor the user loaded on the device.
+
+MS_ACCOUNT = ACCOUNTS["p2wsh"]
+
+
+def other_root(tag):
+    return bip32.HDKey.from_seed(sha256(tag.encode()).digest(), version=NETWORK["xprv"])
+
+
+COSIGNERS = [ROOT, other_root("bitcoin-signer-cases: cosigner A"), other_root("bitcoin-signer-cases: cosigner B")]
+ATTACKERS = [other_root("bitcoin-signer-cases: attacker 1"), other_root("bitcoin-signer-cases: attacker 2")]
+
+
+def member(root, branch, index, claimed_fingerprint=None):
+    """A key of the multisig script, with the derivation the PSBT claims for it."""
+    path = "%s/%d/%d" % (MS_ACCOUNT, branch, index)
+    fingerprint = claimed_fingerprint or root.my_fingerprint
+    return root.derive(path).key.get_public_key(), DerivationPath(fingerprint, bip32.parse_path(path))
+
+
+def sortedmulti(members):
+    return multisig(2, sorted((key for key, _ in members), key=lambda k: k.sec()))
+
+
+def descriptor_of(roots):
+    keys = ",".join(
+        "[%s/48h/1h/0h/2h]%s/<0;1>/*" % (r.my_fingerprint.hex(), r.derive(MS_ACCOUNT).to_public().to_base58())
+        for r in roots
+    )
+    return add_checksum("wsh(sortedmulti(2,%s))" % keys)
+
+
+MS_DESCRIPTOR = descriptor_of(COSIGNERS)
+
+
+def ms_output(members, value=CHANGE):
+    return (p2wsh(sortedmulti(members)), value, members)
+
+
+def build_multisig(tag, outputs, xpubs=None):
+    """Spends one coin of the 2-of-3 wallet to `outputs`, as (scriptPubKey, value,
+    members or None). `xpubs` lists the global xpubs as (root, claimed fingerprint);
+    an honest coordinator lists the three cosigners."""
+    members = [member(r, 0, 0) for r in COSIGNERS]
+    witness_script = sortedmulti(members)
+    funding = TransactionOutput(COIN, p2wsh(witness_script))
+    ptx = prev_tx(tag, [funding])
+    vin = [TransactionInput(ptx.txid(), 0, sequence=0xFFFFFFFD)]
+    vout = [TransactionOutput(value, spk) for spk, value, _ in outputs]
+    psbt = PSBT(Transaction(version=2, vin=vin, vout=vout, locktime=0))
+    for root, fingerprint in xpubs or [(r, r.my_fingerprint) for r in COSIGNERS]:
+        psbt.xpubs[root.derive(MS_ACCOUNT).to_public()] = DerivationPath(fingerprint, bip32.parse_path(MS_ACCOUNT))
+    inp = psbt.inputs[0]
+    inp.witness_utxo = funding
+    inp.non_witness_utxo = ptx
+    inp.witness_script = witness_script
+    for key, derivation in members:
+        inp.bip32_derivations[key] = derivation
+    for out, (_, _, out_members) in zip(psbt.outputs, outputs):
+        if out_members is None:
+            continue
+        out.witness_script = sortedmulti(out_members)
+        for key, derivation in out_members:
+            out.bip32_derivations[key] = derivation
+    return psbt
+
+
+psbt = build_multisig(
+    "baseline-p2wsh-multisig",
+    [send_to_foreign(), ms_output([member(r, 1, 0) for r in COSIGNERS])],
+)
+case(
+    "baseline-p2wsh-multisig",
+    "baseline",
+    "Honest 2-of-3 multisig spend with change",
+    "baseline",
+    ["sign"],
+    "p2wsh",
+    psbt,
+    truth(COIN, SEND, CHANGE),
+    "None. A coin of the 2-of-3 wallet pays a foreign address and the rest comes back to "
+    "the same wallet's change branch.",
+    "Sign, showing the amount sent, the change and the fee.",
+    [BIP174],
+    descriptor=MS_DESCRIPTOR,
+)
+
+# Our key stays in the change script; the two cosigners are replaced by attacker keys
+# that the PSBT labels with the cosigners' fingerprints.
+hijacked = [
+    member(ROOT, 1, 0),
+    member(ATTACKERS[0], 1, 0, claimed_fingerprint=COSIGNERS[1].my_fingerprint),
+    member(ATTACKERS[1], 1, 0, claimed_fingerprint=COSIGNERS[2].my_fingerprint),
+]
+psbt = build_multisig("multisig-change-to-attacker-keys", [send_to_foreign(), ms_output(hijacked)])
+case(
+    "multisig-change-to-attacker-keys",
+    "change",
+    "Multisig change where both other cosigners are replaced by the attacker",
+    "must",
+    ["sign", "warn", "refuse"],
+    "p2wsh",
+    psbt,
+    truth(COIN, SEND + CHANGE, 0),
+    "The change is a 2-of-3 that still holds our key at the change path, so it looks like "
+    "ours, but the other two keys belong to the attacker, labelled with the real "
+    "cosigners' fingerprints. The attacker alone holds two of the three keys.",
+    "Rebuild the change script from the wallet's descriptor (or the inputs' cosigners) and "
+    "count the output as a spend unless it matches.",
+    [BIP174],
+    descriptor=MS_DESCRIPTOR,
+)
+
+psbt = build_multisig(
+    "multisig-change-to-attacker-keys-and-xpubs",
+    [send_to_foreign(), ms_output(hijacked)],
+    xpubs=[
+        (ROOT, ROOT.my_fingerprint),
+        (ATTACKERS[0], COSIGNERS[1].my_fingerprint),
+        (ATTACKERS[1], COSIGNERS[2].my_fingerprint),
+    ],
+)
+case(
+    "multisig-change-to-attacker-keys-and-xpubs",
+    "change",
+    "Multisig change to attacker keys, with global xpubs that vouch for them",
+    "must",
+    ["sign", "warn", "refuse"],
+    "p2wsh",
+    psbt,
+    truth(COIN, SEND + CHANGE, 0),
+    "As in multisig-change-to-attacker-keys, and the PSBT's global xpubs are swapped too: "
+    "the attacker's account xpubs, under the real cosigners' fingerprints, so the change "
+    "keys trace back to listed xpubs. A signer that takes the cosigners from the global "
+    "xpubs rather than from the descriptor the user loaded sees a consistent wallet.",
+    "Take the cosigners from the descriptor the user loaded, never from the PSBT's global xpubs.",
+    [BIP174],
+    descriptor=MS_DESCRIPTOR,
 )
 
 

@@ -32,6 +32,17 @@
       "fee": 10000
     }
   },
+  "baseline-p2wsh-multisig": {
+    "verdict": "sign",
+    "stage": "signed",
+    "warnings": [],
+    "shown": {
+      "inputs": 1000000,
+      "spend": 600000,
+      "change": 390000,
+      "fee": 10000
+    }
+  },
   "change-in-another-account": {
     "verdict": "sign",
     "stage": "signed",
@@ -69,6 +80,22 @@
     "verdict": "refuse",
     "stage": "load",
     "detail": "ValueError: Invalid PSBT: missing non_witness_utxo on a legacy input"
+  },
+  "multisig-change-to-attacker-keys-and-xpubs": {
+    "verdict": "refuse",
+    "stage": "load",
+    "detail": "ValueError: Invalid PSBT: policy mismatch"
+  },
+  "multisig-change-to-attacker-keys": {
+    "verdict": "sign",
+    "stage": "signed",
+    "warnings": [],
+    "shown": {
+      "inputs": 1000000,
+      "spend": 990000,
+      "change": 0,
+      "fee": 10000
+    }
   },
   "op-return-with-value": {
     "verdict": "refuse",

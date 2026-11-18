@@ -37,6 +37,18 @@ def run_case(case, PSBT, PSBTParser, Seed, network):
         shown["op_return"] = parser.op_return_data.hex()
     warnings = list(parser.warnings)
 
+    if "descriptor" in case["wallet"]:
+        # Multisig change is checked against the loaded descriptor on each change screen
+        # (PSBTChangeDetailsView); a mismatch ends the flow there.
+        from embit.descriptor import Descriptor
+
+        descriptor = Descriptor.from_string(case["wallet"]["descriptor"])
+        for n in range(parser.num_change_outputs):
+            if not parser.verify_multisig_output(descriptor, change_num=n):
+                return {"verdict": "refuse", "stage": "change review",
+                        "detail": "change output %d does not belong to the loaded descriptor" % n,
+                        "warnings": warnings, "shown": shown}
+
     before = PSBTParser.sig_count(psbt)
     try:
         psbt.sign_with(parser.root)

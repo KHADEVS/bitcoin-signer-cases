@@ -1,0 +1,30 @@
+{
+  "id": "multisig-change-to-attacker-keys",
+  "class": "change",
+  "title": "Multisig change where both other cosigners are replaced by the attacker",
+  "level": "must",
+  "acceptable": [
+    "sign",
+    "warn",
+    "refuse"
+  ],
+  "wallet": {
+    "mnemonic": "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",
+    "network": "testnet",
+    "script_type": "p2wsh",
+    "account": "m/48h/1h/0h/2h",
+    "descriptor": "wsh(sortedmulti(2,[73c5da0a/48h/1h/0h/2h]tpubDFH9dgzveyD8zTbPUFuLrGmCydNvxehyNdUXKJAQN8x4aZ4j6UZqGfnqFrD4NqyaTVGKbvEW54tsvPTK2UoSbCC1PJY8iCNiwTL3RWZEheQ/<0;1>/*,[2849e5c5/48h/1h/0h/2h]tpubDFWLfJQr8KojD7QLjiUchL92y3aLmkTvxD4GFinANC1NFDCLscZdTmgvUUmT9kVMgad7NksBRHZMVEKqNR25r3Rwk6gMmLwLaHybkt4bhz1/<0;1>/*,[bc8d5dcb/48h/1h/0h/2h]tpubDF4rMdBgS4jeWhDkdAtBpSaHTVNJr4w86gSz4T7jgUnmzyGuF86rDjY23PSf22DNq6EvzDf3rBMyYhvVMBMsC3DG4P38XRCDhdTjzY6znKu/<0;1>/*))#8ykrqhm4"
+  },
+  "psbt": "cHNidP8BAH0CAAAAAc7OQv6eLn/GdXHR4fX0vTw8+HHzoJNsKbZoZMNp/ynvAAAAAAD9////AsAnCQAAAAAAFgAULL/Kx6vdomNUXiQY6QFOVgK4pspw8wUAAAAAACIAIOtbCtd5xL9PU2Ueq4RLT/fH14D5H8scOJ1LRx0JPuE2AAAAAE8BBDWHzwS6wUg5gAAAAh1Pvr3ZZ+GvcUwJl9OPz2cLXOnTAcBEC7zDtqIOt3IcA1aOofNgUZFu0baQw54SqOcGA7KAvTDOXygfKRilU2OqFHPF2gowAACAAQAAgAAAAIACAACATwEENYfPBNmx+W6AAAACMEalRZQaHv3umdAmiiMlESxlKILExrUntvfqUblv22kCTVB2hHdUlnywZJynXcGZatzVahxBBjunDYkfFGZDN9kUKEnlxTAAAIABAACAAAAAgAIAAIBPAQQ1h88Enehj1oAAAAL86z2gfbltXD7aqlWEr94zdkR2XGmaeqVeBArMN9ulUAI7Z+OHgPKBMvGaGZv/3lK695R8M/BFOFj0jjadtScPMRS8jV3LMAAAgAEAAIAAAACAAgAAgAABAF4CAAAAAfO+cWmq2r17YnWvY95Ce865WsWmDjMkSrM1tG2GpcReAAAAAAD/////AUBCDwAAAAAAIgAgdMsTzNdqltq6yNFpmV1jVd5nhfdLNje1rh1i1DvcAG4AAAAAAQErQEIPAAAAAAAiACB0yxPM12qW2rrI0WmZXWNV3meF90s2N7WuHWLUO9wAbgEFaVIhAwuQ7S6GutfypP6XabtBfXupyqESSAfb+zYt++62Xn4BIQNm7VacUcjM4mzrfUtIqK+3fxae3UmJrnFr4BmdD7IKBiEDZ+WA6hiDeJECE58KRqrkq4YG0umsgs79CAI0PRxoB/dTriIGAwuQ7S6GutfypP6XabtBfXupyqESSAfb+zYt++62Xn4BHHPF2gowAACAAQAAgAAAAIACAACAAAAAAAAAAAAiBgNn5YDqGIN4kQITnwpGquSrhgbS6ayCzv0IAjQ9HGgH9xwoSeXFMAAAgAEAAIAAAACAAgAAgAAAAAAAAAAAIgYDZu1WnFHIzOJs631LSKivt38Wnt1Jia5xa+AZnQ+yCgYcvI1dyzAAAIABAACAAAAAgAIAAIAAAAAAAAAAAAAAAQFpUiECDZSDhk+M2HeZWIUJTrVMz0HuqXY71kcrFN84fdkDx+8hA6B9O+C61jyANdIcl7QQiQ09OhnS5AOvs/z8aCaqJjx2IQPCRccqU6FpCPPOLoiWvN3969ivXHrYqbvhXD2kcPUpk1OuIgIDoH074LrWPIA10hyXtBCJDT06GdLkA6+z/PxoJqomPHYcc8XaCjAAAIABAACAAAAAgAIAAIABAAAAAAAAACICAg2Ug4ZPjNh3mViFCU61TM9B7ql2O9ZHKxTfOH3ZA8fvHChJ5cUwAACAAQAAgAAAAIACAACAAQAAAAAAAAAiAgPCRccqU6FpCPPOLoiWvN3969ivXHrYqbvhXD2kcPUpkxy8jV3LMAAAgAEAAIAAAACAAgAAgAEAAAAAAAAAAA==",
+  "honest_view": {
+    "inputs": 1000000,
+    "spend": 990000,
+    "change": 0,
+    "fee": 10000
+  },
+  "attack": "The change is a 2-of-3 that still holds our key at the change path, so it looks like ours, but the other two keys belong to the attacker, labelled with the real cosigners' fingerprints. The attacker alone holds two of the three keys.",
+  "rule": "Rebuild the change script from the wallet's descriptor (or the inputs' cosigners) and count the output as a spend unless it matches.",
+  "refs": [
+    "https://github.com/bitcoin/bips/blob/master/bip-0174.mediawiki"
+  ]
+}

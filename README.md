@@ -19,7 +19,7 @@ Each file in `cases/` is one PSBT and what is expected of a signer that gets it.
 | Field | Content |
 | --- | --- |
 | `psbt` | The PSBT, base64 |
-| `wallet` | The seed (the BIP-39 test mnemonic), network, script type and account the device signs with |
+| `wallet` | The seed (the BIP-39 test mnemonic), network, script type and account the device signs with, and for multisig the descriptor loaded on the device |
 | `attack` | What the coordinator is trying to do |
 | `rule` | What a signer should do about it |
 | `level` | `must` when failing means a loss the user cannot see on the screen, `should` for weaker protection, `baseline` for honest PSBTs |
@@ -45,6 +45,9 @@ Each file in `cases/` is one PSBT and what is expected of a signer that gets it.
 | `change-in-other-script-type` | Sends the change to our key in a script type the wallet does not watch |
 | `change-in-another-account` | Sends the change to another account of the same seed |
 | `op-return-with-value` | Burns 300,000 sats in an OP_RETURN output |
+| `baseline-p2wsh-multisig` | Nothing: an honest 2-of-3 spend with change, the wallet's descriptor loaded on the device |
+| `multisig-change-to-attacker-keys` | Keeps our key in the change script but replaces both other cosigners with the attacker's keys, labelled with the real cosigners' fingerprints |
+| `multisig-change-to-attacker-keys-and-xpubs` | The same, with the PSBT's global xpubs swapped so the attacker's keys trace back to them |
 
 ## Grading
 
@@ -54,8 +57,8 @@ A signer passes a case when its verdict is one of the case's acceptable verdicts
 
 The adapters call the signers' own code at a pinned commit. They do not reimplement it. Each follows the device's signing flow as its source reads:
 
-- `adapters/seedsigner_adapter.py` follows `seedsigner/views/psbt_views.py`: the fingerprint check that selects the seed, `PSBTParser` (an exception there is a refusal), the totals and warnings the review screens get, then `sign_with()` and the signature count the flow uses to tell whether signing did anything.
-- `adapters/krux_adapter.py` follows `Home.sign_psbt()` in `src/krux/pages/home_pages/home.py`: `PSBTSigner` (an exception there is a refusal), the warnings shown before the review, the classification behind `outputs()`, then `sign()`. Krux's hardware modules are replaced with the stand-ins its own test suite uses.
+- `adapters/seedsigner_adapter.py` follows `seedsigner/views/psbt_views.py`: the fingerprint check that selects the seed, `PSBTParser` (an exception there is a refusal), the totals and warnings the review screens get, the check of each multisig change output against the loaded descriptor that `PSBTChangeDetailsView` makes, then `sign_with()` and the signature count the flow uses to tell whether signing did anything.
+- `adapters/krux_adapter.py` loads the multisig descriptor into the wallet when the case has one, then follows `Home.sign_psbt()` in `src/krux/pages/home_pages/home.py`: `PSBTSigner` (an exception there is a refusal), the warnings shown before the review, the classification behind `outputs()`, then `sign()`. Krux's hardware modules are replaced with the stand-ins its own test suite uses.
 
 What this does not cover: the code runs on CPython, not on the device, and the amounts are read from the objects the screens are built from, not from the screens. A difference between those and what the display draws would not show up here.
 
@@ -74,7 +77,7 @@ Run each adapter in its own environment: SeedSigner uses embit from PyPI, Krux i
 
 ## Next
 
-- Multisig: change to a multisig with a swapped cosigner, inputs from two different multisigs, a descriptor that does not match the PSBT.
+- More multisig: inputs from two different multisigs, a wallet with no descriptor loaded, P2SH and nested P2WSH, taproot multisig.
 - PSBTv2 fields, taproot script-path spends, MuSig2 and silent payments as signers add them.
 - More signers. Devices with an emulator (Trezor, BitBox02, Coldcard, Ledger) can run the same cases through HWI.
 

@@ -1,0 +1,28 @@
+{
+  "id": "baseline-p2wsh-multisig",
+  "class": "baseline",
+  "title": "Honest 2-of-3 multisig spend with change",
+  "level": "baseline",
+  "acceptable": [
+    "sign"
+  ],
+  "wallet": {
+    "mnemonic": "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",
+    "network": "testnet",
+    "script_type": "p2wsh",
+    "account": "m/48h/1h/0h/2h",
+    "descriptor": "wsh(sortedmulti(2,[73c5da0a/48h/1h/0h/2h]tpubDFH9dgzveyD8zTbPUFuLrGmCydNvxehyNdUXKJAQN8x4aZ4j6UZqGfnqFrD4NqyaTVGKbvEW54tsvPTK2UoSbCC1PJY8iCNiwTL3RWZEheQ/<0;1>/*,[2849e5c5/48h/1h/0h/2h]tpubDFWLfJQr8KojD7QLjiUchL92y3aLmkTvxD4GFinANC1NFDCLscZdTmgvUUmT9kVMgad7NksBRHZMVEKqNR25r3Rwk6gMmLwLaHybkt4bhz1/<0;1>/*,[bc8d5dcb/48h/1h/0h/2h]tpubDF4rMdBgS4jeWhDkdAtBpSaHTVNJr4w86gSz4T7jgUnmzyGuF86rDjY23PSf22DNq6EvzDf3rBMyYhvVMBMsC3DG4P38XRCDhdTjzY6znKu/<0;1>/*))#8ykrqhm4"
+  },
+  "psbt": "cHNidP8BAH0CAAAAAelGdSnlV7S9pPwUltUL0DqCFI6wy5YJYHdht2NMhKBlAAAAAAD9////AsAnCQAAAAAAFgAULL/Kx6vdomNUXiQY6QFOVgK4pspw8wUAAAAAACIAIBrNjI7WI+ofZdOmxoWYQ8eJLMajNWcysoqE/vIafWHUAAAAAE8BBDWHzwS6wUg5gAAAAh1Pvr3ZZ+GvcUwJl9OPz2cLXOnTAcBEC7zDtqIOt3IcA1aOofNgUZFu0baQw54SqOcGA7KAvTDOXygfKRilU2OqFHPF2gowAACAAQAAgAAAAIACAACATwEENYfPBNmx+W6AAAACMEalRZQaHv3umdAmiiMlESxlKILExrUntvfqUblv22kCTVB2hHdUlnywZJynXcGZatzVahxBBjunDYkfFGZDN9kUKEnlxTAAAIABAACAAAAAgAIAAIBPAQQ1h88Enehj1oAAAAL86z2gfbltXD7aqlWEr94zdkR2XGmaeqVeBArMN9ulUAI7Z+OHgPKBMvGaGZv/3lK695R8M/BFOFj0jjadtScPMRS8jV3LMAAAgAEAAIAAAACAAgAAgAABAF4CAAAAAaJB27VuUwGT20XIsdfFo5tnn0ButF7Pd932NA0I5jCeAAAAAAD/////AUBCDwAAAAAAIgAgdMsTzNdqltq6yNFpmV1jVd5nhfdLNje1rh1i1DvcAG4AAAAAAQErQEIPAAAAAAAiACB0yxPM12qW2rrI0WmZXWNV3meF90s2N7WuHWLUO9wAbgEFaVIhAwuQ7S6GutfypP6XabtBfXupyqESSAfb+zYt++62Xn4BIQNm7VacUcjM4mzrfUtIqK+3fxae3UmJrnFr4BmdD7IKBiEDZ+WA6hiDeJECE58KRqrkq4YG0umsgs79CAI0PRxoB/dTriIGAwuQ7S6GutfypP6XabtBfXupyqESSAfb+zYt++62Xn4BHHPF2gowAACAAQAAgAAAAIACAACAAAAAAAAAAAAiBgNn5YDqGIN4kQITnwpGquSrhgbS6ayCzv0IAjQ9HGgH9xwoSeXFMAAAgAEAAIAAAACAAgAAgAAAAAAAAAAAIgYDZu1WnFHIzOJs631LSKivt38Wnt1Jia5xa+AZnQ+yCgYcvI1dyzAAAIABAACAAAAAgAIAAIAAAAAAAAAAAAAAAQFpUiEDJlvIuDkmE6+P9RQMF5i0eNZhWccv50UpVEwXGDVj02chA5wF4VM9eIrG/+7QWzV0sfvGuC3jQT41eG4PU1F7R8LVIQOgfTvgutY8gDXSHJe0EIkNPToZ0uQDr7P8/GgmqiY8dlOuIgIDoH074LrWPIA10hyXtBCJDT06GdLkA6+z/PxoJqomPHYcc8XaCjAAAIABAACAAAAAgAIAAIABAAAAAAAAACICAyZbyLg5JhOvj/UUDBeYtHjWYVnHL+dFKVRMFxg1Y9NnHChJ5cUwAACAAQAAgAAAAIACAACAAQAAAAAAAAAiAgOcBeFTPXiKxv/u0Fs1dLH7xrgt40E+NXhuD1NRe0fC1Ry8jV3LMAAAgAEAAIAAAACAAgAAgAEAAAAAAAAAAA==",
+  "honest_view": {
+    "inputs": 1000000,
+    "spend": 600000,
+    "change": 390000,
+    "fee": 10000
+  },
+  "attack": "None. A coin of the 2-of-3 wallet pays a foreign address and the rest comes back to the same wallet's change branch.",
+  "rule": "Sign, showing the amount sent, the change and the fee.",
+  "refs": [
+    "https://github.com/bitcoin/bips/blob/master/bip-0174.mediawiki"
+  ]
+}

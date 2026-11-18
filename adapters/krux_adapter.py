@@ -69,14 +69,18 @@ def install_stand_ins(checkout: Path):
 
 
 def run_case(case, k):
+    descriptor = case["wallet"].get("descriptor")
     wallet = k.Wallet(
         k.Key(
             case["wallet"]["mnemonic"],
-            k.TYPE_SINGLESIG,
+            k.TYPE_MULTISIG if descriptor else k.TYPE_SINGLESIG,
             k.NETWORKS["test" if case["wallet"]["network"] == "testnet" else "main"],
             script_type=case["wallet"]["script_type"],
         )
     )
+    if descriptor:
+        # The multisig wallet the user loaded beforehand
+        wallet.load(descriptor, k.FORMAT_NONE)
     try:
         signer = k.PSBTSigner(wallet, b64decode(case["psbt"]), k.FORMAT_NONE)
     except Exception as e:
@@ -129,12 +133,13 @@ def main():
     install_stand_ins(checkout)
 
     from embit.networks import NETWORKS
-    from krux.key import TYPE_SINGLESIG, Key
+    from krux.key import TYPE_MULTISIG, TYPE_SINGLESIG, Key
     from krux.psbt import SPEND, PSBTSigner
     from krux.qr import FORMAT_NONE
     from krux.wallet import Wallet
 
-    k = types.SimpleNamespace(NETWORKS=NETWORKS, TYPE_SINGLESIG=TYPE_SINGLESIG, Key=Key, SPEND=SPEND,
+    k = types.SimpleNamespace(NETWORKS=NETWORKS, TYPE_SINGLESIG=TYPE_SINGLESIG, TYPE_MULTISIG=TYPE_MULTISIG,
+                              Key=Key, SPEND=SPEND,
                               PSBTSigner=PSBTSigner, FORMAT_NONE=FORMAT_NONE, Wallet=Wallet)
     results = {}
     for path in sorted(cases_dir.glob("*.json")):

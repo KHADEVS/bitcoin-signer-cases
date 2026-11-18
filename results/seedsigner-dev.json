@@ -32,6 +32,17 @@
       "fee": 10000
     }
   },
+  "baseline-p2wsh-multisig": {
+    "verdict": "sign",
+    "stage": "signed",
+    "warnings": [],
+    "shown": {
+      "inputs": 1000000,
+      "spend": 600000,
+      "change": 390000,
+      "fee": 10000
+    }
+  },
   "change-in-another-account": {
     "verdict": "refuse",
     "stage": "review",
@@ -59,6 +70,31 @@
     "verdict": "refuse",
     "stage": "review",
     "detail": "PSBTInputAmountVerificationError: Input 0: p2pkh input has no non_witness_utxo to verify against"
+  },
+  "multisig-change-to-attacker-keys-and-xpubs": {
+    "verdict": "refuse",
+    "stage": "change review",
+    "detail": "change output 0 does not belong to the loaded descriptor",
+    "warnings": [],
+    "shown": {
+      "inputs": 1000000,
+      "spend": 600000,
+      "change": 390000,
+      "fee": 10000
+    }
+  },
+  "multisig-change-to-attacker-keys": {
+    "verdict": "warn",
+    "stage": "signed",
+    "warnings": [
+      "no_change"
+    ],
+    "shown": {
+      "inputs": 1000000,
+      "spend": 990000,
+      "change": 0,
+      "fee": 10000
+    }
   },
   "op-return-with-value": {
     "verdict": "sign",
