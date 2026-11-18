@@ -4,7 +4,8 @@
   "title": "Outputs worth more than the inputs",
   "level": "must",
   "acceptable": [
-    "refuse"
+    "refuse",
+    "no-signature"
   ],
   "wallet": {
     "mnemonic": "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",

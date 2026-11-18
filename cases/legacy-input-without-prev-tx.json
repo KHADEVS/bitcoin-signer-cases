@@ -4,7 +4,8 @@
   "title": "Legacy input whose amount comes without its previous transaction",
   "level": "must",
   "acceptable": [
-    "refuse"
+    "refuse",
+    "no-signature"
   ],
   "wallet": {
     "mnemonic": "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",

@@ -5,7 +5,8 @@
   "level": "should",
   "acceptable": [
     "refuse",
-    "warn"
+    "warn",
+    "no-signature"
   ],
   "wallet": {
     "mnemonic": "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",

@@ -1,0 +1,197 @@
+{
+  "baseline-p2pkh": {
+    "shown": {
+      "change": 390000,
+      "fee": 10000,
+      "inputs": 1000000,
+      "spend": 600000
+    },
+    "stage": "signed",
+    "verdict": "sign",
+    "warnings": []
+  },
+  "baseline-p2tr": {
+    "shown": {
+      "change": 390000,
+      "fee": 10000,
+      "inputs": 1000000,
+      "spend": 600000
+    },
+    "stage": "signed",
+    "verdict": "sign",
+    "warnings": []
+  },
+  "baseline-p2wpkh": {
+    "shown": {
+      "change": 390000,
+      "fee": 10000,
+      "inputs": 1000000,
+      "spend": 600000
+    },
+    "stage": "signed",
+    "verdict": "sign",
+    "warnings": []
+  },
+  "baseline-p2wsh-multisig": {
+    "shown": {
+      "change": 390000,
+      "fee": 10000,
+      "inputs": 1000000,
+      "spend": 600000
+    },
+    "stage": "signed",
+    "verdict": "sign",
+    "warnings": []
+  },
+  "change-at-huge-index": {
+    "shown": {
+      "change": 0,
+      "fee": 10000,
+      "inputs": 1000000,
+      "spend": 990000
+    },
+    "stage": "signed",
+    "verdict": "sign",
+    "warnings": []
+  },
+  "change-in-another-account": {
+    "shown": {
+      "change": 0,
+      "fee": 10000,
+      "inputs": 1000000,
+      "spend": 990000
+    },
+    "stage": "signed",
+    "verdict": "sign",
+    "warnings": []
+  },
+  "change-in-other-script-type": {
+    "shown": {
+      "change": 0,
+      "fee": 10000,
+      "inputs": 1000000,
+      "spend": 990000
+    },
+    "stage": "signed",
+    "verdict": "sign",
+    "warnings": []
+  },
+  "change-paid-to-foreign-key": {
+    "shown": {
+      "change": 0,
+      "fee": 10000,
+      "inputs": 1000000,
+      "spend": 990000
+    },
+    "stage": "signed",
+    "verdict": "sign",
+    "warnings": []
+  },
+  "legacy-input-without-prev-tx": {
+    "detail": "MiniscriptPsbt(UtxoUpdate(UtxoCheck))",
+    "shown": {
+      "change": 390000,
+      "fee": 10000,
+      "inputs": 1000000,
+      "spend": 600000
+    },
+    "stage": "signing",
+    "verdict": "no-signature",
+    "warnings": []
+  },
+  "multisig-change-to-attacker-keys": {
+    "shown": {
+      "change": 0,
+      "fee": 10000,
+      "inputs": 1000000,
+      "spend": 990000
+    },
+    "stage": "signed",
+    "verdict": "sign",
+    "warnings": []
+  },
+  "multisig-change-to-attacker-keys-and-xpubs": {
+    "shown": {
+      "change": 0,
+      "fee": 10000,
+      "inputs": 1000000,
+      "spend": 990000
+    },
+    "stage": "signed",
+    "verdict": "sign",
+    "warnings": []
+  },
+  "op-return-with-value": {
+    "shown": {
+      "change": 390000,
+      "fee": 10000,
+      "inputs": 1000000,
+      "spend": 600000
+    },
+    "stage": "signed",
+    "verdict": "sign",
+    "warnings": []
+  },
+  "outputs-exceed-inputs": {
+    "detail": "fee_amount() panicked (bdk_wallet#558)",
+    "stage": "review",
+    "verdict": "refuse"
+  },
+  "prev-tx-does-not-hash-to-prevout": {
+    "detail": "fee_amount() is None: an input amount is missing or does not check out",
+    "stage": "review",
+    "verdict": "refuse"
+  },
+  "segwit-v0-inputs-without-prev-tx": {
+    "detail": "MissingNonWitnessUtxo",
+    "shown": {
+      "change": 390000,
+      "fee": 10000,
+      "inputs": 2000000,
+      "spend": 1600000
+    },
+    "stage": "signing",
+    "verdict": "no-signature",
+    "warnings": []
+  },
+  "sighash-none": {
+    "detail": "NonStandardSighash",
+    "shown": {
+      "change": 390000,
+      "fee": 10000,
+      "inputs": 1000000,
+      "spend": 600000
+    },
+    "stage": "signing",
+    "verdict": "no-signature",
+    "warnings": []
+  },
+  "sighash-single-anyonecanpay": {
+    "detail": "NonStandardSighash",
+    "shown": {
+      "change": 390000,
+      "fee": 10000,
+      "inputs": 1000000,
+      "spend": 600000
+    },
+    "stage": "signing",
+    "verdict": "no-signature",
+    "warnings": []
+  },
+  "taproot-change-with-hidden-script-path": {
+    "shown": {
+      "change": 0,
+      "fee": 10000,
+      "inputs": 1000000,
+      "spend": 990000
+    },
+    "stage": "signed",
+    "verdict": "sign",
+    "warnings": []
+  },
+  "witness-utxo-disagrees-with-prev-tx": {
+    "detail": "fee_amount() is None: an input amount is missing or does not check out",
+    "stage": "review",
+    "verdict": "refuse"
+  }
+}

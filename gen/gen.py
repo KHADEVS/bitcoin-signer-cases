@@ -133,7 +133,10 @@ def truth(inputs, spend, change):
 CASES = []
 
 
-def case(id, cls, title, level, acceptable, script_type, psbt, honest, attack, rule, refs, descriptor=None):
+def case(id, cls, title, level, acceptable, script_type, psbt, honest, attack, rule, refs, descriptor=None,
+         also_safe=None):
+    """`also_safe` lists other (verdict, view) pairs that pass: a signer that does not
+    recognise an output as its own and shows it as a spend is not hiding anything."""
     wallet = {
         "mnemonic": MNEMONIC,
         "network": "testnet",
@@ -143,21 +146,22 @@ def case(id, cls, title, level, acceptable, script_type, psbt, honest, attack, r
     if descriptor is not None:
         # A multisig wallet: the descriptor the user loaded on the device beforehand
         wallet["descriptor"] = descriptor
-    CASES.append(
-        {
-            "id": id,
-            "class": cls,
-            "title": title,
-            "level": level,
-            "acceptable": acceptable,
-            "wallet": wallet,
-            "psbt": b64encode(psbt.serialize()).decode(),
-            "honest_view": honest,
-            "attack": attack,
-            "rule": rule,
-            "refs": refs,
-        }
-    )
+    entry = {
+        "id": id,
+        "class": cls,
+        "title": title,
+        "level": level,
+        "acceptable": acceptable,
+        "wallet": wallet,
+        "psbt": b64encode(psbt.serialize()).decode(),
+        "honest_view": honest,
+        "attack": attack,
+        "rule": rule,
+        "refs": refs,
+    }
+    if also_safe is not None:
+        entry["also_safe"] = [{"verdict": v, "view": view} for v, view in also_safe]
+    CASES.append(entry)
 
 
 BIP174 = "https://github.com/bitcoin/bips/blob/master/bip-0174.mediawiki"
@@ -198,7 +202,7 @@ case(
     "input-amounts",
     "Legacy input whose amount comes without its previous transaction",
     "must",
-    ["refuse"],
+    ["refuse", "no-signature"],
     "p2pkh",
     psbt,
     truth(5 * COIN, SEND, CHANGE),
@@ -219,7 +223,7 @@ case(
     "input-amounts",
     "Previous transaction that is not the one the input spends",
     "must",
-    ["refuse"],
+    ["refuse", "no-signature"],
     "p2wpkh",
     psbt,
     truth(COIN, SEND, CHANGE),
@@ -237,7 +241,7 @@ case(
     "input-amounts",
     "Witness UTXO that contradicts the previous transaction",
     "must",
-    ["refuse"],
+    ["refuse", "no-signature"],
     "p2wpkh",
     psbt,
     truth(5 * COIN, SEND, CHANGE),
@@ -257,7 +261,7 @@ case(
     "input-amounts",
     "Two segwit v0 inputs with no previous transactions",
     "should",
-    ["refuse", "warn"],
+    ["refuse", "warn", "no-signature"],
     "p2wpkh",
     psbt,
     truth(2 * COIN, COIN + SEND, CHANGE),
@@ -276,7 +280,7 @@ case(
     "input-amounts",
     "Outputs worth more than the inputs",
     "must",
-    ["refuse"],
+    ["refuse", "no-signature"],
     "p2wpkh",
     psbt,
     truth(COIN, COIN, CHANGE),
@@ -394,8 +398,10 @@ case(
     truth(COIN, SEND, CHANGE),
     "The change really is ours, but so far past the gap limit that no wallet will find it "
     "by scanning. Whoever built the PSBT knows the index; the user does not.",
-    "Warn, or refuse, when the change index is far beyond the indexes the inputs come from.",
+    "Warn, or refuse, when the change index is far beyond the indexes the inputs come from. "
+    "A signer that does not recognise the output as change and shows it as a spend is safe too.",
     [BIP174],
+    also_safe=[("sign", truth(COIN, SEND + CHANGE, 0))],
 )
 
 coin = Coin("change-in-another-account", "p2wpkh", acct + "/0/0")

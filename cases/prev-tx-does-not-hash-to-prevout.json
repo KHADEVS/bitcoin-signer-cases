@@ -4,7 +4,8 @@
   "title": "Previous transaction that is not the one the input spends",
   "level": "must",
   "acceptable": [
-    "refuse"
+    "refuse",
+    "no-signature"
   ],
   "wallet": {
     "mnemonic": "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",

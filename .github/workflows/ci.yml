@@ -35,6 +35,9 @@ jobs:
           python -m venv ../venv-krux
           ../venv-krux/bin/pip install -q pyqrcode==1.2.1
 
+      - name: BDK adapter
+        run: cargo build -q --release --locked --manifest-path adapters/bdk/Cargo.toml
+
       - name: The cases rebuild exactly as committed
         run: |
           ../venv-ss/bin/python -I gen/gen.py
@@ -44,5 +47,9 @@ jobs:
         run: |
           ../venv-ss/bin/python -I adapters/seedsigner_adapter.py ../seedsigner cases > results/seedsigner-dev.json
           ../venv-krux/bin/python -I adapters/krux_adapter.py ../krux cases > results/krux-develop.json
+          bdk=adapters/bdk/target/release/bdk-adapter
+          $bdk wallet-sign cases > results/bdk-wallet-sign.json
+          $bdk psbt-sign cases > results/psbt-sign-alone.json
+          $bdk psbt-sign-checked cases > results/psbt-sign-with-checks.json
           ../venv-ss/bin/python -I report.py > /dev/null
           git diff --exit-code -- results

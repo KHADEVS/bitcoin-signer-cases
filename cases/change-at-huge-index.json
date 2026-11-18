@@ -21,8 +21,19 @@
     "fee": 10000
   },
   "attack": "The change really is ours, but so far past the gap limit that no wallet will find it by scanning. Whoever built the PSBT knows the index; the user does not.",
-  "rule": "Warn, or refuse, when the change index is far beyond the indexes the inputs come from.",
+  "rule": "Warn, or refuse, when the change index is far beyond the indexes the inputs come from. A signer that does not recognise the output as change and shows it as a spend is safe too.",
   "refs": [
     "https://github.com/bitcoin/bips/blob/master/bip-0174.mediawiki"
+  ],
+  "also_safe": [
+    {
+      "verdict": "sign",
+      "view": {
+        "inputs": 1000000,
+        "spend": 990000,
+        "change": 0,
+        "fee": 10000
+      }
+    }
   ]
 }

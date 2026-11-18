@@ -15,9 +15,16 @@ HERE = Path(__file__).parent
 AMOUNTS = ("spend", "change", "fee")
 
 
+def matches(shown, view):
+    return all(shown[a] == view[a] for a in AMOUNTS)
+
+
 def grade(case, result):
     """Returns (passed, reason)."""
     verdict = result["verdict"]
+    for alt in case.get("also_safe", []):
+        if verdict == alt["verdict"] and matches(result["shown"], alt["view"]):
+            return True, ""
     if verdict not in case["acceptable"]:
         return False, "expected %s" % " or ".join(case["acceptable"])
     if verdict in ("sign", "warn"):
@@ -54,7 +61,7 @@ def main():
     lines.append("| Signer | Code tested |")
     lines.append("| --- | --- |")
     for t in targets:
-        lines.append("| %s | %s `%s` (%s), embit %s |" % (t["name"], t["repo"], t["commit"][:10], t["branch"], t["embit"]))
+        lines.append("| %s | %s `%s` (%s), %s |" % (t["name"], t["repo"], t["commit"][:10], t["branch"], t["library"]))
     lines.append("")
 
     totals = {t["name"]: {"pass": 0, "must": 0, "should": 0} for t in targets}
