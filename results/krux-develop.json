@@ -43,6 +43,17 @@
       "fee": 10000
     }
   },
+  "change-at-huge-index": {
+    "verdict": "sign",
+    "stage": "signed",
+    "warnings": [],
+    "shown": {
+      "inputs": 1000000,
+      "spend": 600000,
+      "change": 390000,
+      "fee": 10000
+    }
+  },
   "change-in-another-account": {
     "verdict": "sign",
     "stage": "signed",

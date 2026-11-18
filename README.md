@@ -44,6 +44,7 @@ Each file in `cases/` is one PSBT and what is expected of a signer that gets it.
 | `taproot-change-with-hidden-script-path` | Pays our taproot key tweaked with a script path only the attacker can use |
 | `change-in-other-script-type` | Sends the change to our key in a script type the wallet does not watch |
 | `change-in-another-account` | Sends the change to another account of the same seed |
+| `change-at-huge-index` | Sends the change to address index 2,147,483,000, past any gap limit |
 | `op-return-with-value` | Burns 300,000 sats in an OP_RETURN output |
 | `baseline-p2wsh-multisig` | Nothing: an honest 2-of-3 spend with change, the wallet's descriptor loaded on the device |
 | `multisig-change-to-attacker-keys` | Keeps our key in the change script but replaces both other cosigners with the attacker's keys, labelled with the real cosigners' fingerprints |

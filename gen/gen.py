@@ -381,6 +381,23 @@ case(
 )
 
 acct = ACCOUNTS["p2wpkh"]
+coin = Coin("change-at-huge-index", "p2wpkh", acct + "/0/0")
+psbt = build([coin], [send_to_foreign(), change_to("p2wpkh", acct + "/1/2147483000")])
+case(
+    "change-at-huge-index",
+    "change",
+    "Change at address index 2,147,483,000",
+    "should",
+    ["warn", "refuse"],
+    "p2wpkh",
+    psbt,
+    truth(COIN, SEND, CHANGE),
+    "The change really is ours, but so far past the gap limit that no wallet will find it "
+    "by scanning. Whoever built the PSBT knows the index; the user does not.",
+    "Warn, or refuse, when the change index is far beyond the indexes the inputs come from.",
+    [BIP174],
+)
+
 coin = Coin("change-in-another-account", "p2wpkh", acct + "/0/0")
 psbt = build([coin], [send_to_foreign(), change_to("p2wpkh", "m/84h/1h/1h/1/0")])
 case(

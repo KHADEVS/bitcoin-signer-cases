@@ -19,7 +19,8 @@
     "embit": "selfcustody fork `d38d43a` (vendored)",
     "notes": [
       "the latest release, 26.09.0 (September 2026), is not tested here.",
-      "`op-return-with-value`: any PSBT with an OP_RETURN output is refused with a TypeError during review, which is safe. Open PR [krux#969](https://github.com/selfcustody/krux/pull/969) shows OP_RETURN outputs."
+      "`op-return-with-value`: any PSBT with an OP_RETURN output is refused with a TypeError during review, which is safe. Open PR [krux#969](https://github.com/selfcustody/krux/pull/969) shows OP_RETURN outputs.",
+      "`change-at-huge-index`: reported to the maintainers privately on 2026-11-18. They confirmed it and suggested a public issue."
     ]
   }
 ]
