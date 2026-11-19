@@ -1,7 +1,7 @@
 """Runs every case on a Trezor emulator through HWI and prints what the device does.
 
 HWI turns the PSBT into Trezor's signing messages, as it does for Bitcoin Core, Specter
-or Liana users. Trezor then shows its own screens. A driver on the debug link reads each
+or Nunchuk users. Trezor then shows its own screens. A driver on the debug link reads each
 screen before confirming it (HWI's own automatic confirmation is turned off), so the
 recorded amounts are the ones the device displayed.
 

@@ -6,7 +6,7 @@ The signers so far:
 
 - [SeedSigner](https://github.com/SeedSigner/seedsigner) and [Krux](https://github.com/selfcustody/krux), open-source firmware written in Python on top of [embit](https://github.com/diybitcoinhardware/embit), so their own parsers run unchanged on a desktop;
 - [BDK](https://github.com/bitcoindevkit/bdk_wallet), the wallet library many software wallets are built on, in three ways: `Wallet::sign` as released in 3.2.0, `bitcoin::Psbt::sign` on its own (what the 3.2.0 deprecation note points to), and `Psbt::sign` after the checks that [bdk_wallet#647](https://github.com/bitcoindevkit/bdk_wallet/pull/647) proposes for 4.0;
-- [Trezor](https://github.com/trezor/trezor-firmware) Safe 5, on Trezor's own emulator build of firmware 2.13.1, driven through [HWI](https://github.com/bitcoin-core/HWI) as Bitcoin Core, Specter or Liana users drive it, with the amounts read from the device's screens.
+- [Trezor](https://github.com/trezor/trezor-firmware) Safe 5, on Trezor's own emulator build of firmware 2.13.1, driven through [HWI](https://github.com/bitcoin-core/HWI) as Bitcoin Core, Specter or Nunchuk users drive it, with the amounts read from the device's screens.
 
 **Results: [results/MATRIX.md](results/MATRIX.md).**
 
